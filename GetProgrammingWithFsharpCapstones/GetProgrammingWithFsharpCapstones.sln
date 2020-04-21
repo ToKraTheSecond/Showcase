@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "GetProgrammingWithFsharpCapstones", "GetProgrammingWithFsharpCapstones\GetProgrammingWithFsharpCapstones.fsproj", "{E5331D80-58E2-44F7-854B-150D7ED03DD7}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Capstone2", "GetProgrammingWithFsharpCapstones\Capstone2.fsproj", "{E5331D80-58E2-44F7-854B-150D7ED03DD7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
