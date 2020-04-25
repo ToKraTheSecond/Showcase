@@ -30,15 +30,15 @@ F# stuff that will be used:
 - records, tuples, functions, high-order functions
 *)
 let getCustomerName() =
-    Console.Write("Enter name: ")
+    Console.Write("Enter name in format \"FirstName LastName\": ")
     Console.ReadLine()
 
 let getAmount() =
-    Console.Write("Enter amount: ")
+    Console.Write("Enter amount as positive number: ")
     Decimal.Parse(Console.ReadLine())
 
 let getOperation() =
-    Console.Write("Enter operation: ")
+    Console.Write("Enter operation [deposit | withdraw | exit]: ")
     Console.ReadLine()
 
 let withdrawWithConsoleAudit = auditAs "withdraw" consoleAudit withdraw
