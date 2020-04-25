@@ -25,11 +25,11 @@ let auditAs operationName audit operation amount account =
     account
 
 let getCustomerName() =
-    Console.Write("Enter name in format \"FirstName LastName\": ")
+    Console.Write("Enter name (format \"FirstName LastName\"): ")
     Console.ReadLine()
 
 let getAmount() =
-    Console.Write("Enter amount as positive number: ")
+    Console.Write("Enter amount (positive double with dot delimiter): ")
     Decimal.Parse(Console.ReadLine())
 
 let getOperation() =
