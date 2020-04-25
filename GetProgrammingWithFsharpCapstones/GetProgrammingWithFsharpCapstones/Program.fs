@@ -3,9 +3,32 @@ open Domain
 open Operations
 open Auditing
 
-// Learn more about F# at https://fsharp.org
-// See the 'F# Tutorial' project for more help.
+(*
+what this should do
+1) allow a customer to deposit and withdraw from 
+   an account and maintain a running total of the
+   balance
+2) decline transcaction if the customer tries to
+   withdraw more money than is in the account
+   ( balance stay as is )
+3) system writes out all transactions to a data
+   store (is pluggable - filesystem, console, .. )
+4) do not couple code to filesystem, console input
+6) app executable as a console application
+7) at start ask for the customer's name and opening
+   balance -> creates account in memory
+8) app repeatedly asks whether the customer wants
+   to deposit or withdraw money from the account
+9) app prints out updated balance to the user
+   after every transaction.
 
+Don't worry about
+- opening multiple accounts
+- overdraw warning - just keep the same balance
+
+F# stuff that will be used:
+- records, tuples, functions, high-order functions
+*)
 let getCustomerName() =
     Console.Write("Enter name: ")
     Console.ReadLine()
