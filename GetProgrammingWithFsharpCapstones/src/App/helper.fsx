@@ -17,9 +17,13 @@ let acc1 = { AccountId = Guid.NewGuid(); Owner = cus1; Balance = 100M }
 let newAccount = acc1 |> withdraw 10M
 newAccount.Balance = 80M // should be true
 
-// Test out console auditor
+// Test console auditor
 
 consoleAudit acc1 "Testing console audit"
+
+// Test file system auditor
+
+fileSystemAudit acc1 "Testing file system audit"
 
 // Composite magic
 acc1 |> deposit 100M |> withdraw 50M
