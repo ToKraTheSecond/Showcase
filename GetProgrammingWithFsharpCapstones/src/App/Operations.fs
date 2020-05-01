@@ -14,7 +14,7 @@ let withdraw amount account =
 
 let auditAs operationName audit operation amount account =
     let updatedAccount = operation amount account
-    audit account ("New balance: " + updatedAccount.Balance.ToString())
+    audit account (" balance: " + updatedAccount.Balance.ToString())
     updatedAccount
 
 let getCustomerName() =

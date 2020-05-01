@@ -10,4 +10,4 @@ let fileSystemAudit account message =
 
 
 let consoleAudit account message =
-    Console.WriteLine("Account " + account.AccountId.ToString() + ": " + message)
+    Console.WriteLine("Account  ID " + account.AccountId.ToString() + message)
