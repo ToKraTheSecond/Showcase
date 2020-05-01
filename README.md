@@ -5,7 +5,10 @@ F# code that I want to expose publicly
 
 ### Capstone 2 - Simple Bank Account System
 
-* description stated as comment in Program.fs
+Description stated as comment in Program.fs
+
+Used F# features:
+* records, tuples, functions, high-order functions
 
 How to run via cmd:
 
