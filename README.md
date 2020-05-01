@@ -13,7 +13,6 @@ Used F# features:
 How to run via cmd:
 
 ```
-cd ..\FsharpShowcase\GetProgrammingWithFsharpCapstones
-dotnet build
-dotnet run --project src\App\Capstone2.fsproj
+dotnet build GetProgrammingWithFsharpCapstones
+dotnet run --project GetProgrammingWithFsharpCapstones\src\App\Capstone2.fsproj
 ```
