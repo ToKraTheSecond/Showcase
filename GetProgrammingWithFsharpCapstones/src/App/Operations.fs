@@ -11,8 +11,8 @@ let withdraw amount account =
     else { account with Balance = account.Balance - amount }
 
 let auditAs operationName audit operation amount account =
+    audit account ("Will " + operationName + " " + amount.ToString() + " " + account.Balance.ToString())    
     let account = operation amount account
-    audit account ("activity: " + operationName + " " + amount.ToString() + "; current amount: " + account.Balance.ToString())    
     account
 
 let getCustomerName() =
