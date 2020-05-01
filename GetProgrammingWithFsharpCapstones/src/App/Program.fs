@@ -35,6 +35,7 @@ let depositWithConsoleAudit = auditAs "deposit" consoleAudit deposit
 
 [<EntryPoint>]
 let main argv =
+    Console.WriteLine("Opening new account")
     let name = getCustomerName()
     let balance = getAmount()
 
