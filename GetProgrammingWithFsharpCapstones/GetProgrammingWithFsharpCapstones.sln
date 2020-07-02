@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Capstone2", "src\App\Capstone2.fsproj", "{7FA5C5C3-83B0-447B-B42A-46D48C80936A}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Capstone3", "Capstone3\Capstone3.fsproj", "{017BD528-3385-4D2F-93D9-DFCA1EEF3E5C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,18 @@ Global
 		{7FA5C5C3-83B0-447B-B42A-46D48C80936A}.Release|x64.Build.0 = Release|Any CPU
 		{7FA5C5C3-83B0-447B-B42A-46D48C80936A}.Release|x86.ActiveCfg = Release|Any CPU
 		{7FA5C5C3-83B0-447B-B42A-46D48C80936A}.Release|x86.Build.0 = Release|Any CPU
+		{017BD528-3385-4D2F-93D9-DFCA1EEF3E5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{017BD528-3385-4D2F-93D9-DFCA1EEF3E5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{017BD528-3385-4D2F-93D9-DFCA1EEF3E5C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{017BD528-3385-4D2F-93D9-DFCA1EEF3E5C}.Debug|x64.Build.0 = Debug|Any CPU
+		{017BD528-3385-4D2F-93D9-DFCA1EEF3E5C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{017BD528-3385-4D2F-93D9-DFCA1EEF3E5C}.Debug|x86.Build.0 = Debug|Any CPU
+		{017BD528-3385-4D2F-93D9-DFCA1EEF3E5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{017BD528-3385-4D2F-93D9-DFCA1EEF3E5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{017BD528-3385-4D2F-93D9-DFCA1EEF3E5C}.Release|x64.ActiveCfg = Release|Any CPU
+		{017BD528-3385-4D2F-93D9-DFCA1EEF3E5C}.Release|x64.Build.0 = Release|Any CPU
+		{017BD528-3385-4D2F-93D9-DFCA1EEF3E5C}.Release|x86.ActiveCfg = Release|Any CPU
+		{017BD528-3385-4D2F-93D9-DFCA1EEF3E5C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
