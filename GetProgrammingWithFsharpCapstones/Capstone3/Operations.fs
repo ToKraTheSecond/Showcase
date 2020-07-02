@@ -26,5 +26,5 @@ let getAmount() =
     Decimal.Parse(Console.ReadLine())
 
 let getOperation() =
-    Console.WriteLine("Choose operation [deposit | withdraw | exit]: ")
+    Console.WriteLine("Choose operation [(d)eposit | (w)ithdraw | (e)xit]: ")
     Console.ReadLine()
