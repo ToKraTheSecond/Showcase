@@ -18,8 +18,7 @@ let getAmount command =
     | 'w' -> ('w', 25M)
     | 'e' -> ('e', 0M)
 
-let processCommand (commandAmount : char * decimal, account : Account) =
-    let command, amount = commandAmount
+let processCommand (account:Account) (command:char, amount:decimal) =
     match command with
     | 'd' -> deposit amount account
     | 'w' -> withdraw amount account
