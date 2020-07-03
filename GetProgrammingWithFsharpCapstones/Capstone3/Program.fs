@@ -1,8 +1,17 @@
-﻿// Learn more about F# at http://fsharp.org
-
-open System
+﻿open System
+open Domain
+open Operations
 
 [<EntryPoint>]
 let main argv =
-    printfn "Hello World from F#!"
-    0 // return an integer exit code
+    let openingAccount = { AccountId = Guid.NewGuid(); Owner = { Name = getCustomerName() }; Balance = 0M }
+    Console.Write ("\n Current balance is " + openingAccount.Balance.ToString())
+
+    consoleCommands
+    |> Seq.filter isValidCommand
+    |> Seq.takeWhile (not << isStopCommand)
+    |> Seq.map getAmountConsole
+    |> Seq.fold processCommand openingAccount
+    |> ignore
+
+    0

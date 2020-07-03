@@ -4,13 +4,19 @@ open System
 open Domain
 
 let deposit amount account =
-    { account with Balance = account.Balance + amount }
+    let newAcc = { account with Balance = account.Balance + amount }
+    Console.Write ("\n Current balance is " + newAcc.Balance.ToString())
+    newAcc
 
 let withdraw amount account =
     if amount > account.Balance then 
-        Console.WriteLine("Transaction rejected!")
+        Console.Write "\n Transaction rejected!"
+        Console.Write ("\n Current balance is " + account.Balance.ToString())
         account
-    else { account with Balance = account.Balance - amount }
+    else 
+    let newAcc = { account with Balance = account.Balance - amount }
+    Console.Write ("\n Current balance is " + newAcc.Balance.ToString())
+    newAcc
 
 let auditAs operationName audit operation amount account =
     let updatedAccount = operation amount account
@@ -18,13 +24,31 @@ let auditAs operationName audit operation amount account =
     updatedAccount
 
 let getCustomerName() =
-    Console.WriteLine("Enter name: ")
+    Console.Write "\n Enter name: "
     Console.ReadLine()
 
-let getAmount() =
-    Console.WriteLine("Enter amount (positive double with dot delimiter): ")
-    Decimal.Parse(Console.ReadLine())
+let isValidCommand command =
+    let validCommands = Set.ofList [ 'd'; 'w'; 'x']
+    validCommands.Contains(command)
 
-let getOperation() =
-    Console.WriteLine("Choose operation [(d)eposit | (w)ithdraw | (e)xit]: ")
-    Console.ReadLine()
+let isStopCommand command =
+    command.ToString().Equals('x')
+
+let getAmountConsole command =
+    Console.Write "\n Enter amount: "
+    let amount = Decimal.Parse(Console.ReadLine())
+    match command with
+    | 'd' -> ('d', amount)
+    | 'w' -> ('w', amount)
+    | 'x' -> ('x', 0M)
+
+let processCommand (account:Account) (command:char, amount:decimal) =
+    match command with
+    | 'd' -> deposit amount account
+    | 'w' -> withdraw amount account
+    | 'x' -> account
+
+let consoleCommands = seq {
+    while true do
+        Console.Write "\n (d)eposit, (w)ithdraw or e(x)it: "
+        yield Console.ReadKey().KeyChar }
