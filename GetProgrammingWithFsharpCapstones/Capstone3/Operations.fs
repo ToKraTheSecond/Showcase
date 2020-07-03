@@ -20,7 +20,12 @@ let withdraw amount account =
 
 let auditAs operationName audit operation amount account =
     let updatedAccount = operation amount account
-    audit account (" balance: " + updatedAccount.Balance.ToString())
+    let transaction = {
+        Amount = updatedAccount.Balance;
+        Operation = "how_to_get_operation?"
+        Timestamp = DateTime.UtcNow.ToString()
+        WasSuccess = true }
+    audit account transaction
     updatedAccount
 
 let getCustomerName() =
@@ -41,12 +46,6 @@ let getAmountConsole command =
     | 'd' -> ('d', amount)
     | 'w' -> ('w', amount)
     | 'x' -> ('x', 0M)
-
-let processCommand (account:Account) (command:char, amount:decimal) =
-    match command with
-    | 'd' -> deposit amount account
-    | 'w' -> withdraw amount account
-    | 'x' -> account
 
 let consoleCommands = seq {
     while true do
