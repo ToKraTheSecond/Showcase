@@ -22,7 +22,7 @@ let auditAs operationName audit operation amount account =
     let updatedAccount = operation amount account
     let transaction = {
         Amount = updatedAccount.Balance;
-        Operation = "how_to_get_operation?"
+        Operation = operationName
         Timestamp = DateTime.UtcNow.ToString()
         WasSuccess = true }
     audit account transaction
@@ -37,7 +37,7 @@ let isValidCommand command =
     validCommands.Contains(command)
 
 let isStopCommand command =
-    command.ToString().Equals('x')
+    command.ToString().Equals("x")
 
 let getAmountConsole command =
     Console.Write "\n Enter amount: "
