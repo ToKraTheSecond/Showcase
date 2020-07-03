@@ -11,3 +11,11 @@ type Account =
         Owner : Customer
         Balance : decimal
     }
+
+type Transaction =
+    {
+        Amount : decimal
+        Operation : string
+        Timestamp : string
+        WasSuccess : bool
+    }
