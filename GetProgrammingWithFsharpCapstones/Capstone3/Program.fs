@@ -1,16 +1,6 @@
 ﻿open System
 open Domain
 open Operations
-open Auditing
-
-let withdrawWithConsoleAudit = auditAs "withdraw" fileSystemAudit withdraw
-let depositWithConsoleAudit = auditAs "deposit" fileSystemAudit deposit
-
-let processCommand (account:Account) (command:char, amount:decimal) =
-    match command with
-    | 'd' -> depositWithConsoleAudit amount account
-    | 'w' -> withdrawWithConsoleAudit amount account
-    | 'x' -> account
 
 [<EntryPoint>]
 let main argv =

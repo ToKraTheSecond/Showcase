@@ -2,6 +2,7 @@
 
 open System
 open Domain
+open Auditing
 
 let deposit amount account =
     let newAcc = { account with Balance = account.Balance + amount }
@@ -24,7 +25,7 @@ let auditAs operationName audit operation amount account =
         Amount = updatedAccount.Balance;
         Operation = operationName
         Timestamp = DateTime.UtcNow.ToString()
-        WasSuccess = true }
+        WasSuccess = true } // TODO: How to get this state
     audit account transaction
     updatedAccount
 
@@ -51,3 +52,21 @@ let consoleCommands = seq {
     while true do
         Console.Write "\n (d)eposit, (w)ithdraw or e(x)it: "
         yield Console.ReadKey().KeyChar }
+
+let processCommand (account:Account) (command:char, amount:decimal) =
+    match command with
+    | 'd' ->  auditAs "deposit" fileSystemAudit deposit amount account
+    | 'w' -> auditAs "withdraw" fileSystemAudit withdraw amount account
+    | 'x' -> account
+
+let loadAccount owner accountId transactions =
+    let initAccount = { AccountId = accountId; Owner = { Name = owner }; Balance = 0M }
+
+    let getCommandAmountTuple transaction =
+        match transaction.Operation with
+        | "deposit" -> ('d', transaction.Amount)
+        | "withdraw" -> ('w', transaction.Amount)
+
+    transactions
+    |> Seq.map getCommandAmountTuple
+    |> Seq.fold processCommand initAccount
