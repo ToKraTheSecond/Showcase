@@ -2,7 +2,7 @@
 
 open System
 open Domain
-open Auditing
+open Logger
 
 let deposit amount account =
     let newAcc = { account with Balance = account.Balance + amount }
@@ -55,8 +55,8 @@ let consoleCommands = seq {
 
 let processCommand (account:Account) (command:char, amount:decimal) =
     match command with
-    | 'd' ->  auditAs "deposit" fileSystemAudit deposit amount account
-    | 'w' -> auditAs "withdraw" fileSystemAudit withdraw amount account
+    | 'd' ->  auditAs "deposit" logToFile deposit amount account
+    | 'w' -> auditAs "withdraw" logToFile withdraw amount account
     | 'x' -> account
 
 let loadAccount owner accountId transactions =

@@ -1,4 +1,4 @@
-﻿module Auditing
+﻿module Logger
 open Domain
 open System
 open System.IO
@@ -10,12 +10,12 @@ let serialized transaction =
         transaction.Timestamp
         transaction.WasSuccess
 
-let fileSystemAudit account transaction =
+let logToFile account transaction =
     let fileName =  account.Owner.Name + ".txt"
     let filePath = Path.Combine(Path.GetTempPath(), fileName)
     File.AppendAllText(filePath, serialized transaction + "\n")
 
-let consoleAudit account transaction =
+let logToConsole account transaction =
     Console.WriteLine(
         "\n Account  ID: "
         + account.AccountId.ToString()
