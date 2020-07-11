@@ -68,5 +68,6 @@ let loadAccount owner accountId transactions =
         | "withdraw" -> ('w', transaction.Amount)
 
     transactions
+    |> Seq.sortBy(fun transaction -> transaction.Timestamp)
     |> Seq.map getCommandAmountTuple
     |> Seq.fold processCommand initAccount
