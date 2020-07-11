@@ -71,3 +71,12 @@ let loadAccount owner accountId transactions =
     |> Seq.sortBy(fun transaction -> transaction.Timestamp)
     |> Seq.map getCommandAmountTuple
     |> Seq.fold processCommand initAccount
+
+let deserialize (serializedString:string) =
+    let splitted = serializedString.Split([| "***" |], StringSplitOptions.None)
+    { 
+        Amount = Decimal.Parse(splitted.[0]);
+        Operation = splitted.[1];
+        Timestamp = splitted.[2];
+        WasSuccess = Boolean.Parse(splitted.[3]);
+    }
