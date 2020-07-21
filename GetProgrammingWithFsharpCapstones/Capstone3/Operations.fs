@@ -3,6 +3,7 @@
 open System
 open Domain
 open Logger
+open System.IO
 
 let deposit amount account =
     let newAcc = { account with Balance = account.Balance + amount }
@@ -80,3 +81,17 @@ let deserialize (serializedString:string) =
         Timestamp = splitted.[2];
         WasSuccess = Boolean.Parse(splitted.[3]);
     }
+
+let readLines (filePath:string) = seq {
+    use sr = new StreamReader (filePath)
+    while not sr.EndOfStream do
+        yield sr.ReadLine ()
+}
+
+let loadTransactionFromDisk customer =
+    let fileName = customer.Name  + ".txt"
+    let filePath = Path.Combine(Path.GetTempPath(), fileName)
+    
+    match File.Exists(filePath) with
+    | true -> readLines filePath |> Seq.map deserialize
+    | false -> Seq.empty<Transaction>
