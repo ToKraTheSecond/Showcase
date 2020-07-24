@@ -60,18 +60,16 @@ let processCommand (account:Account) (command:char, amount:decimal) =
     | 'w' -> auditAs "withdraw" logToFile withdraw amount account
     | 'x' -> account
 
-let loadAccount owner accountId transactions =
-    let initAccount = { AccountId = accountId; Owner = { Name = owner }; Balance = 0M }
+let getCommandAmountTuple transaction =
+    match transaction.Operation with
+    | "deposit" -> ('d', transaction.Amount)
+    | "withdraw" -> ('w', transaction.Amount)
 
-    let getCommandAmountTuple transaction =
-        match transaction.Operation with
-        | "deposit" -> ('d', transaction.Amount)
-        | "withdraw" -> ('w', transaction.Amount)
-
-    transactions
-    |> Seq.sortBy(fun transaction -> transaction.Timestamp)
-    |> Seq.map getCommandAmountTuple
-    |> Seq.fold processCommand initAccount
+let readLines (filePath:string) = seq {
+    use sr = new StreamReader (filePath)
+    while not sr.EndOfStream do
+        yield sr.ReadLine ()
+}
 
 let deserialize (serializedString:string) =
     let splitted = serializedString.Split([| "***" |], StringSplitOptions.None)
@@ -82,16 +80,23 @@ let deserialize (serializedString:string) =
         WasSuccess = Boolean.Parse(splitted.[3]);
     }
 
-let readLines (filePath:string) = seq {
-    use sr = new StreamReader (filePath)
-    while not sr.EndOfStream do
-        yield sr.ReadLine ()
-}
+let loadAccount customer =
+    let initAccount = {
+        AccountId = Guid.NewGuid();
+        Owner = customer;
+        Balance = 0M
+    }
 
-let loadTransactionFromDisk customer =
     let fileName = customer.Name  + ".txt"
     let filePath = Path.Combine(Path.GetTempPath(), fileName)
-    
-    match File.Exists(filePath) with
-    | true -> readLines filePath |> Seq.map deserialize
-    | false -> Seq.empty<Transaction>
+
+    let transactions =
+        match File.Exists(filePath) with
+        | true -> readLines filePath |> Seq.map deserialize
+        | false -> Seq.empty<Transaction>
+
+    transactions
+    |> Seq.sortBy(fun transaction -> transaction.Timestamp)
+    |> Seq.map getCommandAmountTuple
+    |> Seq.fold processCommand initAccount
+
