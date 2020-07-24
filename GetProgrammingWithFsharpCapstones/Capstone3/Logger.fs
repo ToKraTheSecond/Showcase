@@ -1,6 +1,5 @@
 ﻿module Logger
 open Domain
-open System
 open System.IO
 
 let serialized transaction =

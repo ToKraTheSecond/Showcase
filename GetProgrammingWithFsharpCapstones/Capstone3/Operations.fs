@@ -6,26 +6,20 @@ open Logger
 open System.IO
 
 let deposit amount account =
-    let newAcc = { account with Balance = account.Balance + amount }
-    Console.Write ("\n Current balance after deposit of: " + amount.ToString() + " is " + newAcc.Balance.ToString())
-    newAcc
+    { account with Balance = account.Balance + amount }
 
 let withdraw amount account =
-    if amount > account.Balance then 
-        Console.Write ("\n Withdraw of " + amount.ToString() + " rejected! Current balance is " + account.Balance.ToString())
-        account
-    else 
-    let newAcc = { account with Balance = account.Balance - amount }
-    Console.Write ("\n Current balance after withdraw of: " + amount.ToString() + " is " + newAcc.Balance.ToString())
-    newAcc
+    if amount > account.Balance then account
+    else { account with Balance = account.Balance - amount }
 
 let auditAs operationName audit operation amount account =
     let updatedAccount = operation amount account
-    let transaction = {
-        Amount = amount;
-        Operation = operationName
-        Timestamp = DateTime.UtcNow.ToString()
-        WasSuccess = true } // TODO: How to get this state
+
+    let transaction =
+        match (account = updatedAccount) with
+        | true -> { Amount = amount; Operation = operationName; Timestamp = DateTime.UtcNow.ToString(); WasSuccess = true }
+        | false -> { Amount = amount; Operation = operationName; Timestamp = DateTime.UtcNow.ToString(); WasSuccess = false }
+
     audit account transaction
     updatedAccount
 
@@ -55,7 +49,7 @@ let consoleCommands = seq {
 
 let processCommand (account:Account) (command:char, amount:decimal) =
     match command with
-    | 'd' ->  auditAs "deposit" logToFile deposit amount account
+    | 'd' -> auditAs "deposit" logToFile deposit amount account
     | 'w' -> auditAs "withdraw" logToFile withdraw amount account
     | 'x' -> account
 
@@ -94,17 +88,10 @@ let loadAccount customer =
         | true -> readLines filePath |> Seq.map deserialize
         | false -> Seq.empty<Transaction>
 
-    match Seq.length transactions with
-    | 0 -> Console.Write "\n No previous transactions found! \n Empty account created. "
-    | _ -> Console.Write "\n Previous transactions: "
+    if Seq.length transactions = 0 then printfn "No previous transactions found. New account created."
 
-    let account =
-        transactions
-        |> Seq.sortBy(fun transaction -> transaction.Timestamp)
-        |> Seq.map getCommandAmountTuple
-        |> Seq.fold processCommand initAccount
-
-    Console.Write ("\n Current balance is " + account.Balance.ToString())
-
-    account
-
+    transactions
+    |> Seq.sortBy(fun transaction -> transaction.Timestamp)
+    |> Seq.fold(fun account  transaction ->
+        if transaction.Operation =  "withdraw" then account |> withdraw transaction.Amount
+        else account |> deposit transaction.Amount) initAccount
