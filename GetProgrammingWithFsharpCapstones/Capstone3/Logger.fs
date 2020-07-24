@@ -14,10 +14,3 @@ let logToFile account transaction =
     let fileName =  account.Owner.Name + ".txt"
     let filePath = Path.Combine(Path.GetTempPath(), fileName)
     File.AppendAllText(filePath, serialized transaction + "\n")
-
-let logToConsole account transaction =
-    Console.WriteLine(
-        "\n Account  ID: "
-        + account.AccountId.ToString()
-        + " "
-        + serialized transaction)
