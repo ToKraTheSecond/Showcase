@@ -98,8 +98,11 @@ let loadAccount customer =
     | 0 -> Console.Write "\n No previous transactions found! \n Empty account created. "
     | _ -> Console.Write "\n Previous transactions: "
 
-    transactions
-    |> Seq.sortBy(fun transaction -> transaction.Timestamp)
-    |> Seq.map getCommandAmountTuple
-    |> Seq.fold processCommand initAccount
+    let account =
+        transactions
+        |> Seq.sortBy(fun transaction -> transaction.Timestamp)
+        |> Seq.map getCommandAmountTuple
+        |> Seq.fold processCommand initAccount
+
+    Console.Write ("\n Current balance is " + account.Balance.ToString())
 

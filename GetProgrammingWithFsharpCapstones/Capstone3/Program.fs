@@ -6,8 +6,6 @@ open Operations
 let main argv =
     let account = loadAccount { Name = getCustomerName() }
 
-    Console.Write ("\n Current balance is " + account.Balance.ToString())
-
     consoleCommands
     |> Seq.filter isValidCommand
     |> Seq.takeWhile (not << isStopCommand)
