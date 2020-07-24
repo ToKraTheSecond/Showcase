@@ -106,3 +106,5 @@ let loadAccount customer =
 
     Console.Write ("\n Current balance is " + account.Balance.ToString())
 
+    account
+
