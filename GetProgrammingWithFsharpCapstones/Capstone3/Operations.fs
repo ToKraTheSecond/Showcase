@@ -7,17 +7,16 @@ open System.IO
 
 let deposit amount account =
     let newAcc = { account with Balance = account.Balance + amount }
-    Console.Write ("\n Current balance is " + newAcc.Balance.ToString())
+    Console.Write ("\n Current balance after deposit of: " + amount.ToString() + " is " + newAcc.Balance.ToString())
     newAcc
 
 let withdraw amount account =
     if amount > account.Balance then 
-        Console.Write "\n Transaction rejected!"
-        Console.Write ("\n Current balance is " + account.Balance.ToString())
+        Console.Write ("\n Withdraw of " + amount.ToString() + " rejected! Current balance is " + account.Balance.ToString())
         account
     else 
     let newAcc = { account with Balance = account.Balance - amount }
-    Console.Write ("\n Current balance is " + newAcc.Balance.ToString())
+    Console.Write ("\n Current balance after withdraw of: " + amount.ToString() + " is " + newAcc.Balance.ToString())
     newAcc
 
 let auditAs operationName audit operation amount account =
@@ -94,6 +93,10 @@ let loadAccount customer =
         match File.Exists(filePath) with
         | true -> readLines filePath |> Seq.map deserialize
         | false -> Seq.empty<Transaction>
+
+    match Seq.length transactions with
+    | 0 -> Console.Write "\n No previous transactions found! \n Empty account created. "
+    | _ -> Console.Write "\n Previous transactions: "
 
     transactions
     |> Seq.sortBy(fun transaction -> transaction.Timestamp)
