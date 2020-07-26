@@ -24,9 +24,17 @@ let auditAs operationName operation amount account =
     logToConsole account.AccountId transaction
     updatedAccount
 
-let getCustomerName() =
-    Console.Write "\n Enter name: "
-    Console.ReadLine()
+let isNameValid name =
+    match Seq.length name with
+    | 0 -> false
+    | _ -> name |> Seq.forall (fun c -> System.Char.IsLetter(c))
+
+let rec getCustomerName () =
+    printfn "Enter name: "
+    let name = Console.ReadLine()
+    match isNameValid name with
+    | true -> name
+    | false -> getCustomerName()
 
 let isValidCommand command =
     let validCommands = Set.ofList [ 'd'; 'w'; 'x']
