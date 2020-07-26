@@ -2,6 +2,12 @@
 open Domain
 open System.IO
 
+let logToConsole accountId transaction =
+    printfn "Account %O: %s of %M (approved: %b)"
+        accountId transaction.Operation
+        transaction.Amount
+        transaction.WasSuccess
+
 let serialized transaction =
     sprintf "%M***%s***%s***%b"
         transaction.Amount

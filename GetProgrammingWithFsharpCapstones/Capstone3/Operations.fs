@@ -12,15 +12,16 @@ let withdraw amount account =
     if amount > account.Balance then account
     else { account with Balance = account.Balance - amount }
 
-let auditAs operationName audit operation amount account =
+let auditAs operationName operation amount account =
     let updatedAccount = operation amount account
 
     let transaction =
         match (account = updatedAccount) with
-        | true -> { Amount = amount; Operation = operationName; Timestamp = DateTime.UtcNow.ToString(); WasSuccess = true }
-        | false -> { Amount = amount; Operation = operationName; Timestamp = DateTime.UtcNow.ToString(); WasSuccess = false }
+        | true -> { Amount = amount; Operation = operationName; Timestamp = DateTime.UtcNow.ToString(); WasSuccess = false }
+        | false -> { Amount = amount; Operation = operationName; Timestamp = DateTime.UtcNow.ToString(); WasSuccess = true }
 
-    audit account transaction
+    logToFile account transaction
+    logToConsole account.AccountId transaction
     updatedAccount
 
 let getCustomerName() =
@@ -49,8 +50,8 @@ let consoleCommands = seq {
 
 let processCommand (account:Account) (command:char, amount:decimal) =
     match command with
-    | 'd' -> auditAs "deposit" logToFile deposit amount account
-    | 'w' -> auditAs "withdraw" logToFile withdraw amount account
+    | 'd' -> auditAs "deposit" deposit amount account
+    | 'w' -> auditAs "withdraw" withdraw amount account
     | 'x' -> account
 
 let getCommandAmountTuple transaction =
@@ -88,7 +89,9 @@ let loadAccount customer =
         | true -> readLines filePath |> Seq.map deserialize
         | false -> Seq.empty<Transaction>
 
-    if Seq.length transactions = 0 then printfn "No previous transactions found. New account created."
+    match Seq.length transactions = 0 with
+    | true -> printfn "No previous transactions found. New account created."
+    | false -> printfn "Previous transactions found. Loaded."
 
     transactions
     |> Seq.sortBy(fun transaction -> transaction.Timestamp)
