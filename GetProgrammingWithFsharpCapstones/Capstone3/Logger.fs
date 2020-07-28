@@ -1,5 +1,7 @@
 ﻿module Logger
+
 open Domain
+open Transactions
 open System.IO
 
 let logToConsole accountId transaction =
@@ -8,14 +10,13 @@ let logToConsole accountId transaction =
         transaction.Amount
         transaction.WasSuccess
 
-let serialized transaction =
-    sprintf "%M***%s***%s***%b"
-        transaction.Amount
-        transaction.Operation
-        transaction.Timestamp
-        transaction.WasSuccess
-
 let logToFile account transaction =
     let fileName =  account.Owner.Name + ".txt"
     let filePath = Path.Combine(Path.GetTempPath(), fileName)
     File.AppendAllText(filePath, serialized transaction + "\n")
+
+let readLines (filePath:string) = seq {
+    use sr = new StreamReader (filePath)
+    while not sr.EndOfStream do
+        yield sr.ReadLine ()
+}

@@ -2,6 +2,7 @@
 
 open System
 open Domain
+open Transactions
 open Logger
 open System.IO
 
@@ -12,17 +13,12 @@ let withdraw amount account =
     if amount > account.Balance then account
     else { account with Balance = account.Balance - amount }
 
-let auditAs operationName operation amount account =
-    let updatedAccount = operation amount account
+let isCommandValid command =
+    let validCommands = Set.ofList [ 'd'; 'w'; 'x']
+    validCommands.Contains(command)
 
-    let transaction =
-        match (account = updatedAccount) with
-        | true -> { Amount = amount; Operation = operationName; Timestamp = DateTime.UtcNow.ToString(); WasSuccess = false }
-        | false -> { Amount = amount; Operation = operationName; Timestamp = DateTime.UtcNow.ToString(); WasSuccess = true }
-
-    logToFile account transaction
-    logToConsole account.AccountId transaction
-    updatedAccount
+let isCommandStop command =
+    command.ToString().Equals("x")
 
 let isNameValid name =
     match Seq.length name with
@@ -36,12 +32,17 @@ let rec getCustomerName () =
     | true -> name
     | false -> getCustomerName()
 
-let isCommandValid command =
-    let validCommands = Set.ofList [ 'd'; 'w'; 'x']
-    validCommands.Contains(command)
+let auditAs operationName operation amount account =
+    let updatedAccount = operation amount account
 
-let isCommandStop command =
-    command.ToString().Equals("x")
+    let transaction =
+        match (account = updatedAccount) with
+        | true -> { Amount = amount; Operation = operationName; Timestamp = DateTime.UtcNow.ToString(); WasSuccess = false }
+        | false -> { Amount = amount; Operation = operationName; Timestamp = DateTime.UtcNow.ToString(); WasSuccess = true }
+
+    logToFile account transaction
+    logToConsole account.AccountId transaction
+    updatedAccount
 
 let getAmountConsole command =
     Console.Write "\n Enter amount: "
@@ -67,21 +68,6 @@ let getCommandAmountTuple transaction =
     | "deposit" -> ('d', transaction.Amount)
     | "withdraw" -> ('w', transaction.Amount)
 
-let readLines (filePath:string) = seq {
-    use sr = new StreamReader (filePath)
-    while not sr.EndOfStream do
-        yield sr.ReadLine ()
-}
-
-let deserialize (serializedString:string) =
-    let splitted = serializedString.Split([| "***" |], StringSplitOptions.None)
-    { 
-        Amount = Decimal.Parse(splitted.[0]);
-        Operation = splitted.[1];
-        Timestamp = splitted.[2];
-        WasSuccess = Boolean.Parse(splitted.[3]);
-    }
-
 let loadAccount customer =
     let initAccount = {
         AccountId = Guid.NewGuid();
@@ -95,7 +81,7 @@ let loadAccount customer =
     let transactions =
         match File.Exists(filePath) with
         | true -> readLines filePath |> Seq.map deserialize
-        | false -> Seq.empty<Transaction>
+        | false -> Seq.empty<Domain.Transaction>
 
     match Seq.length transactions = 0 with
     | true -> printfn "No previous transactions found. New account created."
