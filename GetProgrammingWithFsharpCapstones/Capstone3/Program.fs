@@ -7,8 +7,8 @@ let main argv =
     let account = loadAccount { Name = getCustomerName() }
 
     consoleCommands
-    |> Seq.filter isValidCommand
-    |> Seq.takeWhile (not << isStopCommand)
+    |> Seq.filter isCommandValid
+    |> Seq.takeWhile (not << isCommandStop)
     |> Seq.map getAmountConsole
     |> Seq.fold processCommand account
     |> ignore

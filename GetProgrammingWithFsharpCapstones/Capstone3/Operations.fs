@@ -36,11 +36,11 @@ let rec getCustomerName () =
     | true -> name
     | false -> getCustomerName()
 
-let isValidCommand command =
+let isCommandValid command =
     let validCommands = Set.ofList [ 'd'; 'w'; 'x']
     validCommands.Contains(command)
 
-let isStopCommand command =
+let isCommandStop command =
     command.ToString().Equals("x")
 
 let getAmountConsole command =
