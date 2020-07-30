@@ -1,5 +1,4 @@
-﻿open System
-open Domain
+﻿open Domain
 open Operations
 
 [<EntryPoint>]

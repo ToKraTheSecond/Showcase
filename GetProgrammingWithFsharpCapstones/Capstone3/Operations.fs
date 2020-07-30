@@ -1,10 +1,10 @@
 ﻿module Operations
 
 open System
+open System.IO
 open Domain
 open Transactions
 open Logger
-open System.IO
 
 let deposit amount account =
     { account with Balance = account.Balance + amount }
@@ -26,7 +26,7 @@ let isNameValid name =
     | _ -> name |> Seq.forall (fun c -> System.Char.IsLetter(c))
 
 let rec getCustomerName () =
-    printfn "Enter name: "
+    printf "Enter name: "
     let name = Console.ReadLine()
     match isNameValid name with
     | true -> name
@@ -45,7 +45,7 @@ let auditAs operationName operation amount account =
     updatedAccount
 
 let getAmountConsole command =
-    Console.Write "\n Enter amount: "
+    printf "Enter amount: "
     let amount = Decimal.Parse(Console.ReadLine())
     match command with
     | 'd' -> ('d', amount)
@@ -54,8 +54,10 @@ let getAmountConsole command =
 
 let consoleCommands = seq {
     while true do
-        Console.Write "\n (d)eposit, (w)ithdraw or e(x)it: "
-        yield Console.ReadKey().KeyChar }
+        printf "(d)eposit, (w)ithdraw or e(x)it: "
+        let char = Console.ReadKey().KeyChar
+        printfn ""
+        yield char }
 
 let processCommand (account:Account) (command:char, amount:decimal) =
     match command with
