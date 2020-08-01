@@ -25,6 +25,11 @@ let isNameValid name =
     | 0 -> false
     | _ -> name |> Seq.forall (fun c -> System.Char.IsLetter(c))
 
+let isAmountValid amount =
+    match Seq.length amount with
+    | 0 -> false
+    | _ -> amount |> Seq.forall (fun d -> System.Char.IsDigit(d))
+
 let rec getCustomerName () =
     printf "Enter name: "
     let name = Console.ReadLine()
@@ -44,13 +49,16 @@ let auditAs operationName operation amount account =
     logToConsole account.AccountId transaction
     updatedAccount
 
-let getAmountConsole command =
+let rec getAmountConsole command =
     printf "Enter amount: "
-    let amount = Decimal.Parse(Console.ReadLine())
-    match command with
-    | 'd' -> ('d', amount)
-    | 'w' -> ('w', amount)
-    | 'x' -> ('x', 0M)
+    let amount = Console.ReadLine()
+    match isAmountValid amount with
+    | true ->
+        match command with
+        | 'd' -> ('d', Decimal.Parse(amount))
+        | 'w' -> ('w', Decimal.Parse(amount))
+        | 'x' -> ('x', 0M)
+    | false -> getAmountConsole command
 
 let consoleCommands = seq {
     while true do
