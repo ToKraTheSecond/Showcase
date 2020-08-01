@@ -5,10 +5,10 @@ open Operations
 let main argv =
     let account = loadAccount { Name = getCustomerName() }
 
-    consoleCommands
+    readConsoleCommand
     |> Seq.filter isCommandValid
     |> Seq.takeWhile (not << isCommandStop)
-    |> Seq.map getAmountConsole
+    |> Seq.map getAmount
     |> Seq.fold processCommand account
     |> ignore
 

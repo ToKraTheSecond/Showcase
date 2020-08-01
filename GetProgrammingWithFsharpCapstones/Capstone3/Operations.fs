@@ -14,8 +14,7 @@ let withdraw amount account =
     else { account with Balance = account.Balance - amount }
 
 let isCommandValid command =
-    let validCommands = Set.ofList [ 'd'; 'w'; 'x']
-    validCommands.Contains(command)
+    (Set.ofList [ 'd'; 'w'; 'x']).Contains(command)
 
 let isCommandStop command =
     command.ToString().Equals("x")
@@ -37,7 +36,7 @@ let rec getCustomerName () =
     | true -> name
     | false -> getCustomerName()
 
-let auditAs operationName operation amount account =
+let processTransaction operationName operation amount account =
     let updatedAccount = operation amount account
 
     let transaction =
@@ -49,7 +48,7 @@ let auditAs operationName operation amount account =
     logToConsole account.AccountId transaction
     updatedAccount
 
-let rec getAmountConsole command =
+let rec getAmount command =
     printf "Enter amount: "
     let amount = Console.ReadLine()
     match isAmountValid amount with
@@ -58,9 +57,9 @@ let rec getAmountConsole command =
         | 'd' -> ('d', Decimal.Parse(amount))
         | 'w' -> ('w', Decimal.Parse(amount))
         | 'x' -> ('x', 0M)
-    | false -> getAmountConsole command
+    | false -> getAmount command
 
-let consoleCommands = seq {
+let readConsoleCommand = seq {
     while true do
         printf "(d)eposit, (w)ithdraw or e(x)it: "
         let char = Console.ReadKey().KeyChar
@@ -69,8 +68,8 @@ let consoleCommands = seq {
 
 let processCommand (account:Account) (command:char, amount:decimal) =
     match command with
-    | 'd' -> auditAs "deposit" deposit amount account
-    | 'w' -> auditAs "withdraw" withdraw amount account
+    | 'd' -> processTransaction "deposit" deposit amount account
+    | 'w' -> processTransaction "withdraw" withdraw amount account
     | 'x' -> account
 
 let getCommandAmountTuple transaction =

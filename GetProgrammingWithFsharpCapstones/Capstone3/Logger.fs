@@ -13,7 +13,7 @@ let logToConsole accountId transaction =
 let logToFile account transaction =
     let fileName =  account.Owner.Name + ".txt"
     let filePath = Path.Combine(Path.GetTempPath(), fileName)
-    File.AppendAllText(filePath, serialized transaction + "\n")
+    File.AppendAllText(filePath, serialize transaction + "\n")
 
 let readLines (filePath:string) = seq {
     use sr = new StreamReader (filePath)

@@ -3,7 +3,7 @@
 open System
 open Domain
 
-let serialized transaction =
+let serialize transaction =
     sprintf "%M***%s***%s***%b"
         transaction.Amount
         transaction.Operation
