@@ -6,6 +6,18 @@ open Domain
 open Transactions
 open Logger
 
+type Command =
+    | Withdraw of char
+    | Deposit of char
+    | Exit of char
+
+let tryParseCommand inputChar =
+    match inputChar with
+    | 'd' -> Some(Deposit 'd')
+    | 'w' -> Some(Withdraw 'w')
+    | 'x' -> Some(Exit 'x')
+    | _ -> None
+
 let deposit amount account =
     { account with Balance = account.Balance + amount }
 
@@ -14,7 +26,7 @@ let withdraw amount account =
     else { account with Balance = account.Balance - amount }
 
 let isCommandValid command =
-    (Set.ofList [ 'd'; 'w'; 'x']).Contains(command)
+    (tryParseCommand command).IsSome
 
 let isCommandStop command =
     command.ToString().Equals("x")
