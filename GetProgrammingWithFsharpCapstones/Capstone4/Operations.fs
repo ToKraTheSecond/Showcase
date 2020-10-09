@@ -6,16 +6,13 @@ open Domain
 open Transactions
 open Logger
 
-type Command =
-    | Withdraw of char
-    | Deposit of char
-    | Exit of char
+type Command = Withdraw | Deposit | Exit
 
 let tryParseCommand inputChar =
     match inputChar with
-    | 'd' -> Some(Deposit 'd')
-    | 'w' -> Some(Withdraw 'w')
-    | 'x' -> Some(Exit 'x')
+    | 'd' -> Some Deposit
+    | 'w' -> Some Withdraw
+    | 'x' -> Some Exit
     | _ -> None
 
 let deposit amount account =
@@ -25,11 +22,11 @@ let withdraw amount account =
     if amount > account.Balance then account
     else { account with Balance = account.Balance - amount }
 
-let isCommandValid command =
-    (tryParseCommand command).IsSome
+let isCommandValid commandChar =
+    tryParseCommand commandChar
 
-let isCommandStop command =
-    command.ToString().Equals("x")
+let isCommandStop (command:Command) =
+    command = Exit
 
 let isNameValid name =
     match Seq.length name with
@@ -60,15 +57,15 @@ let processTransaction operationName operation amount account =
     logToConsole account.AccountId transaction
     updatedAccount
 
-let rec getAmount command =
+let rec getAmount (command: Command) =
     printf "Enter amount: "
     let amount = Console.ReadLine()
     match isAmountValid amount with
     | true ->
         match command with
-        | 'd' -> ('d', Decimal.Parse(amount))
-        | 'w' -> ('w', Decimal.Parse(amount))
-        | 'x' -> ('x', 0M)
+        | Deposit -> ('d', Decimal.Parse(amount))
+        | Withdraw -> ('w', Decimal.Parse(amount))
+        | Exit -> ('x', 0M)
     | false -> getAmount command
 
 let readConsoleCommand = seq {
