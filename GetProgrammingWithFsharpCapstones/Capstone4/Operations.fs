@@ -60,9 +60,9 @@ let rec getAmount (command: Command) =
     match isAmountValid amount with
     | true ->
         match command with
-        | Deposit -> ('d', Decimal.Parse(amount))
-        | Withdraw -> ('w', Decimal.Parse(amount))
-        | Exit -> ('x', 0M)
+        | Deposit -> (Deposit, Decimal.Parse(amount))
+        | Withdraw -> (Withdraw, Decimal.Parse(amount))
+        | Exit -> (Withdraw, 0M)
     | false -> getAmount command
 
 let readConsoleCommand = seq {
@@ -72,11 +72,11 @@ let readConsoleCommand = seq {
         printfn ""
         yield char }
 
-let processCommand (account:Account) (command:char, amount:decimal) =
+let processCommand (account:Account) (command:Command, amount:decimal) =
     match command with
-    | 'd' -> processTransaction "deposit" deposit amount account
-    | 'w' -> processTransaction "withdraw" withdraw amount account
-    | 'x' -> account
+    | Deposit -> processTransaction "deposit" deposit amount account
+    | Withdraw -> processTransaction "withdraw" withdraw amount account
+    | Exit -> account
 
 let getCommandAmountTuple transaction =
     match transaction.Operation with
