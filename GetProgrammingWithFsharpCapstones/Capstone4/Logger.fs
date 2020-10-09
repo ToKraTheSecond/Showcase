@@ -6,7 +6,7 @@ open System.IO
 
 let logToConsole accountId transaction =
     printfn "Account %O: %s of %M (approved: %b)"
-        accountId transaction.Operation
+        accountId (parseCommandToString transaction.Operation)
         transaction.Amount
         transaction.WasSuccess
 

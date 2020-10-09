@@ -6,8 +6,6 @@ open Domain
 open Transactions
 open Logger
 
-type Command = Withdraw | Deposit | Exit
-
 let tryParseCommand inputChar =
     match inputChar with
     | 'd' -> Some Deposit
@@ -42,13 +40,13 @@ let rec getCustomerName () =
     | true -> name
     | false -> getCustomerName()
 
-let processTransaction operationName operation amount account =
+let processTransaction (command:Command) operation amount account =
     let updatedAccount = operation amount account
 
     let transaction =
         match (account = updatedAccount) with
-        | true -> { Amount = amount; Operation = operationName; Timestamp = DateTime.UtcNow.ToString(); WasSuccess = false }
-        | false -> { Amount = amount; Operation = operationName; Timestamp = DateTime.UtcNow.ToString(); WasSuccess = true }
+        | true -> { Amount = amount; Operation = command; Timestamp = DateTime.UtcNow.ToString(); WasSuccess = false }
+        | false -> { Amount = amount; Operation = command; Timestamp = DateTime.UtcNow.ToString(); WasSuccess = true }
 
     logToFile account transaction
     logToConsole account.AccountId transaction
@@ -74,14 +72,14 @@ let readConsoleCommand = seq {
 
 let processCommand (account:Account) (command:Command, amount:decimal) =
     match command with
-    | Deposit -> processTransaction "deposit" deposit amount account
-    | Withdraw -> processTransaction "withdraw" withdraw amount account
+    | Deposit -> processTransaction Deposit deposit amount account
+    | Withdraw -> processTransaction Withdraw withdraw amount account
     | Exit -> account
 
 let getCommandAmountTuple transaction =
     match transaction.Operation with
-    | "deposit" -> ('d', transaction.Amount)
-    | "withdraw" -> ('w', transaction.Amount)
+    | Deposit -> (Deposit, transaction.Amount)
+    | Withdraw -> (Withdraw, transaction.Amount)
 
 let loadAccount customer =
     let initAccount = {
@@ -105,5 +103,5 @@ let loadAccount customer =
     transactions
     |> Seq.sortBy(fun transaction -> transaction.Timestamp)
     |> Seq.fold(fun account  transaction ->
-        if transaction.Operation =  "withdraw" then account |> withdraw transaction.Amount
+        if transaction.Operation =  Withdraw then account |> withdraw transaction.Amount
         else account |> deposit transaction.Amount) initAccount
