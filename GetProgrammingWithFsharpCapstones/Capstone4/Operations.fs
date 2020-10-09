@@ -25,9 +25,6 @@ let withdraw amount account =
 let isCommandValid commandChar =
     tryParseCommand commandChar
 
-let isCommandStop (command:Command) =
-    command = Exit
-
 let isNameValid name =
     match Seq.length name with
     | 0 -> false

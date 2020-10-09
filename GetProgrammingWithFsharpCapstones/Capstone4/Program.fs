@@ -7,7 +7,7 @@ let main argv =
 
     readConsoleCommand
     |> Seq.choose isCommandValid
-    |> Seq.takeWhile (not << isCommandStop)
+    |> Seq.takeWhile ((<>) Exit)
     |> Seq.map getAmount
     |> Seq.fold processCommand account
     |> ignore
