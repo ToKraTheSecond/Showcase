@@ -57,6 +57,7 @@ let processTransaction (command:BankOperation) operation amount account =
     logToConsole account.AccountId transaction
     updatedAccount
 
+// Book prefers non recursive method witch returns option type
 let rec getAmount (command:BankOperation) =
     printf "Enter amount: "
     let amount = Console.ReadLine()
