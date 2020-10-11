@@ -8,6 +8,7 @@ let main argv =
     readConsoleCommand
     |> Seq.choose isCommandValid
     |> Seq.takeWhile ((<>) Exit)
+    |> Seq.choose tryGetBankOperation
     |> Seq.map getAmount
     |> Seq.fold processCommand account
     |> ignore

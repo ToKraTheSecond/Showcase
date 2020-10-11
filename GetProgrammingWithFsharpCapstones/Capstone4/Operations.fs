@@ -8,10 +8,15 @@ open Logger
 
 let tryParseCommand inputChar =
     match inputChar with
-    | 'd' -> Some Deposit
-    | 'w' -> Some Withdraw
+    | 'd' -> Some (AccountCommand Deposit)
+    | 'w' -> Some (AccountCommand Withdraw)
     | 'x' -> Some Exit
     | _ -> None
+
+let tryGetBankOperation cmd =
+    match cmd with
+    | Exit -> None
+    | AccountCommand op -> Some op
 
 let deposit amount account =
     { account with Balance = account.Balance + amount }
@@ -40,7 +45,7 @@ let rec getCustomerName () =
     | true -> name
     | false -> getCustomerName()
 
-let processTransaction (command:Command) operation amount account =
+let processTransaction (command:BankOperation) operation amount account =
     let updatedAccount = operation amount account
 
     let transaction =
@@ -52,7 +57,7 @@ let processTransaction (command:Command) operation amount account =
     logToConsole account.AccountId transaction
     updatedAccount
 
-let rec getAmount (command: Command) =
+let rec getAmount (command:BankOperation) =
     printf "Enter amount: "
     let amount = Console.ReadLine()
     match isAmountValid amount with
@@ -60,7 +65,6 @@ let rec getAmount (command: Command) =
         match command with
         | Deposit -> (Deposit, Decimal.Parse(amount))
         | Withdraw -> (Withdraw, Decimal.Parse(amount))
-        | Exit -> (Withdraw, 0M)
     | false -> getAmount command
 
 let readConsoleCommand = seq {
@@ -70,11 +74,10 @@ let readConsoleCommand = seq {
         printfn ""
         yield char }
 
-let processCommand (account:Account) (command:Command, amount:decimal) =
+let processCommand (account:Account) (command:BankOperation, amount:decimal) =
     match command with
     | Deposit -> processTransaction Deposit deposit amount account
     | Withdraw -> processTransaction Withdraw withdraw amount account
-    | Exit -> account
 
 let getCommandAmountTuple transaction =
     match transaction.Operation with

@@ -12,12 +12,13 @@ type Account =
         Balance : decimal
     }
 
-type Command = Withdraw | Deposit | Exit
+type BankOperation = Deposit | Withdraw
+type Command = AccountCommand of BankOperation | Exit
 
 type Transaction =
     {
         Amount : decimal
-        Operation : Command
+        Operation : BankOperation
         Timestamp : string
         WasSuccess : bool
     }

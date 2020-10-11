@@ -7,13 +7,11 @@ let parseCommandToString command =
     match command with
     | Withdraw -> "withdraw"
     | Deposit -> "deposit"
-    | Exit -> "exit"
 
 let parseStringToCommand string =
     match string with
     | "withdraw" -> Withdraw
     | "deposit" -> Deposit
-    | "exit" -> Exit
 
 let serialize transaction =
     sprintf "%M***%s***%s***%b"
