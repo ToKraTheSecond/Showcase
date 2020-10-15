@@ -85,6 +85,13 @@ let getCommandAmountTuple transaction =
     | Deposit -> (Deposit, transaction.Amount)
     | Withdraw -> (Withdraw, transaction.Amount)
 
+let tryFindAccountFolder ownerName =
+    let fileName = ownerName  + ".txt"
+    let filePath = Path.Combine(Path.GetTempPath(), fileName)
+    match File.Exists(filePath) with
+    | true -> Some filePath
+    | false -> None
+
 let loadAccount customer =
     let initAccount = {
         AccountId = Guid.NewGuid();
@@ -92,13 +99,10 @@ let loadAccount customer =
         Balance = 0M
     }
 
-    let fileName = customer.Name  + ".txt"
-    let filePath = Path.Combine(Path.GetTempPath(), fileName)
-
     let transactions =
-        match File.Exists(filePath) with
-        | true -> readLines filePath |> Seq.map deserialize
-        | false -> Seq.empty<Domain.Transaction>
+        match (tryFindAccountFolder customer.Name) with
+        | Some filePath -> readLines filePath |> Seq.map deserialize
+        | None -> Seq.empty<Domain.Transaction>
 
     match Seq.length transactions = 0 with
     | true -> printfn "No previous transactions found. New account created."
