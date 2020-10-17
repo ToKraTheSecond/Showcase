@@ -22,3 +22,8 @@ type Transaction =
         Timestamp : string
         WasSuccess : bool
     }
+
+type CreditAccount = CreditAccount of Account
+type RatedAccount =
+    | InCredit of CreditAccount
+    | Overdrawn of Account
