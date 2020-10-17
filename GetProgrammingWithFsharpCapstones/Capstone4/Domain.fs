@@ -27,3 +27,7 @@ type CreditAccount = CreditAccount of Account
 type RatedAccount =
     | InCredit of CreditAccount
     | Overdrawn of Account
+    member this.GetField getter =
+        match this with
+        | InCredit (CreditAccount account) -> getter account
+        | Overdrawn account -> getter account
