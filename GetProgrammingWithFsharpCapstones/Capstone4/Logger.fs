@@ -5,13 +5,12 @@ open Transactions
 open System.IO
 
 let logToConsole accountId transaction =
-    printfn "Account %O: %s of %M (approved: %b)"
+    printfn "Account %O: %s of %M"
         accountId (parseCommandToString transaction.Operation)
         transaction.Amount
-        transaction.WasSuccess
 
-let logToFile account transaction =
-    let fileName =  account.Owner.Name + ".txt"
+let logToFile (account:RatedAccount) transaction =
+    let fileName = account.GetField(fun a -> a.Owner.Name + ".txt")
     let filePath = Path.Combine(Path.GetTempPath(), fileName)
     File.AppendAllText(filePath, serialize transaction + "\n")
 

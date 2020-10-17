@@ -14,11 +14,10 @@ let parseStringToCommand string =
     | "deposit" -> Deposit
 
 let serialize transaction =
-    sprintf "%M***%s***%s***%b"
+    sprintf "%M***%s***%s"
         transaction.Amount
         (parseCommandToString transaction.Operation)
         transaction.Timestamp
-        transaction.WasSuccess
 
 let deserialize (serializedString:string) =
     let splitted = serializedString.Split([| "***" |], StringSplitOptions.None)
@@ -26,5 +25,4 @@ let deserialize (serializedString:string) =
         Amount = Decimal.Parse(splitted.[0]);
         Operation = parseStringToCommand splitted.[1];
         Timestamp = splitted.[2];
-        WasSuccess = Boolean.Parse(splitted.[3]);
     }

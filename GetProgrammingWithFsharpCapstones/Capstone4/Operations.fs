@@ -18,12 +18,28 @@ let tryGetBankOperation cmd =
     | Exit -> None
     | AccountCommand op -> Some op
 
-let deposit amount account =
-    { account with Balance = account.Balance + amount }
+let classifyAccount account =
+    if account.Balance >= 0M then (InCredit(CreditAccount account))
+    else Overdrawn account
 
-let withdraw amount account =
-    if amount > account.Balance then account
-    else { account with Balance = account.Balance - amount }
+let withdraw amount (CreditAccount account) =
+    { account with Balance = account.Balance - amount }
+    |> classifyAccount
+
+let withdrawSafe amount ratedAccount =
+    match ratedAccount with
+    | InCredit account -> account |> withdraw amount
+    | Overdrawn _ ->
+        printfn "Your account is overdrawn - withdrawal rejected!"
+        ratedAccount
+
+let deposit amount account =
+    let account =
+        match account with
+        | InCredit (CreditAccount account) -> account
+        | Overdrawn account -> account
+    { account with Balance = account.Balance + amount }
+    |> classifyAccount
 
 let isCommandValid commandChar =
     tryParseCommand commandChar
@@ -45,16 +61,12 @@ let rec getCustomerName () =
     | true -> name
     | false -> getCustomerName()
 
-let processTransaction (command:BankOperation) operation amount account =
+let processTransaction (command:BankOperation) operation amount (account:RatedAccount) =
     let updatedAccount = operation amount account
-
-    let transaction =
-        match (account = updatedAccount) with
-        | true -> { Amount = amount; Operation = command; Timestamp = DateTime.UtcNow.ToString(); WasSuccess = false }
-        | false -> { Amount = amount; Operation = command; Timestamp = DateTime.UtcNow.ToString(); WasSuccess = true }
+    let transaction = { Amount = amount; Operation = command; Timestamp = DateTime.UtcNow.ToString(); }
 
     logToFile account transaction
-    logToConsole account.AccountId transaction
+    logToConsole (account.GetField(fun a -> a.AccountId)) transaction
     updatedAccount
 
 // Book prefers non recursive method witch returns option type
@@ -75,10 +87,10 @@ let readConsoleCommand = seq {
         printfn ""
         yield char }
 
-let processCommand (account:Account) (command:BankOperation, amount:decimal) =
+let processCommand account (command:BankOperation, amount:decimal) =
     match command with
     | Deposit -> processTransaction Deposit deposit amount account
-    | Withdraw -> processTransaction Withdraw withdraw amount account
+    | Withdraw -> processTransaction Withdraw withdrawSafe amount account
 
 let getCommandAmountTuple transaction =
     match transaction.Operation with
@@ -111,5 +123,6 @@ let loadAccount customer =
     transactions
     |> Seq.sortBy(fun transaction -> transaction.Timestamp)
     |> Seq.fold(fun account  transaction ->
-        if transaction.Operation =  Withdraw then account |> withdraw transaction.Amount
-        else account |> deposit transaction.Amount) initAccount
+        match transaction.Operation with
+        | Withdraw -> account |> withdrawSafe transaction.Amount
+        | Deposit -> account |> deposit transaction.Amount) (initAccount |> classifyAccount)

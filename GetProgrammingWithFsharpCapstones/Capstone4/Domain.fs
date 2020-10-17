@@ -20,7 +20,6 @@ type Transaction =
         Amount : decimal
         Operation : BankOperation
         Timestamp : string
-        WasSuccess : bool
     }
 
 type CreditAccount = CreditAccount of Account
