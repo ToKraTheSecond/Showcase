@@ -6,8 +6,12 @@ open System.IO
 
 let logToConsole accountId transaction =
     printfn "Account %O: %s of %M"
-        accountId (parseCommandToString transaction.Operation)
+        accountId
+        (parseCommandToString transaction.Operation)
         transaction.Amount
+
+let logCurrentAccountAmountToConsole (ratedAccount:RatedAccount) =
+    printfn "Current balance: %M" (ratedAccount.GetField(fun a -> a.Balance))
 
 let logToFile (account:RatedAccount) transaction =
     let fileName = account.GetField(fun a -> a.Owner.Name + ".txt")

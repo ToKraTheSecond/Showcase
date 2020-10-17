@@ -67,6 +67,7 @@ let processTransaction (command:BankOperation) operation amount (account:RatedAc
 
     logToFile account transaction
     logToConsole (account.GetField(fun a -> a.AccountId)) transaction
+    logCurrentAccountAmountToConsole updatedAccount
     updatedAccount
 
 // Book prefers non recursive method witch returns option type
