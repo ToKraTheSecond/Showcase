@@ -6,12 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Helper.fsx" />
     <Compile Include="Domain.fs" />
     <Compile Include="Transactions.fs" />
     <Compile Include="Logger.fs" />
     <Compile Include="Operations.fs" />
     <Compile Include="Program.fs" />
+    <None Include="Helper.fsx" />
   </ItemGroup>
 
 </Project>
