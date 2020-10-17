@@ -1,8 +1,11 @@
 ﻿open Domain
+open Logger
 open Operations
 
 [<EntryPoint>]
 let main argv =
+    printInitString
+    
     let account = loadAccount { Name = getCustomerName() }
 
     readConsoleCommand

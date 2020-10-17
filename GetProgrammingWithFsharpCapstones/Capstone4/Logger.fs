@@ -4,6 +4,15 @@ open Domain
 open Transactions
 open System.IO
 
+let printInitString =
+    printfn "Hello!\n"
+    printfn "This is banking application written in F#\n"
+    printfn "You are able to:"
+    printfn "* select name"
+    printfn "* deposit, withdraw or exit"
+    printfn "* automatically load existing account from file system"
+    printfn "* deposit to overdrawn account, but withdrawal from overdrawn acount is not allowed\n"
+
 let logToConsole accountId transaction =
     printfn "Account %O: %s of %M"
         accountId
