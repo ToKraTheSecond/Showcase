@@ -6,6 +6,6 @@ F# code that I want to expose publicly
 ### Simple Bank Account System - Capstone 4
 
 ```
-dotnet build GetProgrammingWithFsharpCapstones
-dotnet run --project GetProgrammingWithFsharpCapstones\Capstone4\Capstone4.fsproj
+dotnet build GetProgrammingWithFsharp\GetProgrammingWithFsharpCapstones
+dotnet run --project GetProgrammingWithFsharp\GetProgrammingWithFsharpCapstones\Capstone4\Capstone4.fsproj
 ```
