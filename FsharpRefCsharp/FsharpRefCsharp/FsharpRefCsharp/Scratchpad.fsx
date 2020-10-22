@@ -14,3 +14,12 @@ let longhand =
 let shorthand =
     [ "Tony"; "Fred"; "Samantha"; "Brad"; "Sophie"]
     |> List.map Person // treating a constructor like a standard function
+
+open System.Collections.Generic
+
+type PersonComparer() =
+    interface IComparer<Person> with
+        member this.Compare(x, y) = x.Name.CompareTo(y.Name)
+
+let pComparer = PersonComparer() :> IComparer<Person> // explicitly upcast ":>"
+pComparer.Compare(simon, Person "Fred")
