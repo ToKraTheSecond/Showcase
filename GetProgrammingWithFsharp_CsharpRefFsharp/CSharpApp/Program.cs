@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Model;
+using System;
 
 namespace CSharpApp
 {
@@ -6,7 +7,27 @@ namespace CSharpApp
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var car = new Car(
+                    4,
+                    "Supercars",
+                    Tuple.Create(1.5, 3.5));
+            
+            var bike = Model.Vehicle.Motorbike.NewMotorbike(
+                    "kukuBike",
+                    1.0);
+
+            var somewheeledCar = Model.Functions.CreateCar(
+                    4,
+                    "Supacars",
+                    1.5,
+                    3.5);
+
+            // try to avoid providing partially applied functions to C#
+            var fourWheeledCar =
+                    Model.Functions.CreateFourWheeledCar
+                        .Invoke("Supacars")
+                        .Invoke(1.5)
+                        .Invoke(3.5);
         }
     }
 }
