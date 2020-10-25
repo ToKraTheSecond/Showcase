@@ -1,6 +1,7 @@
 ﻿// requires absolute path
 // not sure how to use relative path
-#r @"C:\Users\krata\git\FsharpShowcase\FsharpRefCsharp\FsharpRefCsharp\CSharpProject\obj\Debug\netstandard2.0\CSharpProject.dll"
+#I @"C:\Users\krata\git\FsharpShowcase\"
+#r @"FsharpRefCsharp\FsharpRefCsharp\CSharpProject\obj\Debug\netstandard2.0\CSharpProject.dll"
 
 open CSharpProject
 
