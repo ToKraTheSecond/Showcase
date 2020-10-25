@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Csharp_DigitRecognizer;
+using System;
 
 namespace DigitRecognizer
 {
@@ -6,7 +7,10 @@ namespace DigitRecognizer
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var trainingPath = "data/trainingsample.csv";
+            var training = DataReader.ReadObservations(trainingPath);
+
+            Console.ReadLine();
         }
     }
 }
