@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Csharp_DigitRecognizer
+﻿namespace Csharp_DigitRecognizer
 {
-    class Observation
+    public class Observation
     {
         public Observation(string label, int[] pixels)
         {

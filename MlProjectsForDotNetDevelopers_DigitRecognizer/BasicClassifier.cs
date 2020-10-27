@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+
 
 namespace Csharp_DigitRecognizer
 {
     public class BasicClassifier : IClassifier
     {
-        internal IEnumerable<Observation> data;
+        private IEnumerable<Observation> data;
         private readonly IDistance distance;
         public BasicClassifier(IDistance distance)
         {
             this.distance = distance;
         }
-        void IClassifier.Train(IEnumerable<Observation> trainingSet)
+        public void Train(IEnumerable<Observation> trainingSet)
         {
             this.data = trainingSet;
         }
