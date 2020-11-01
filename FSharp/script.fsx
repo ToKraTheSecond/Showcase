@@ -18,19 +18,6 @@ let trainingData = reader trainingPath
 let validationPath = @"C:\Users\krata\git\FsharpShowcase\MlProjectsForDotNetDevelopers_DigitRecognizer\data\validationsample.csv" // update this path
 let validationData = reader validationPath
 
-(*
-let manhattanDistance (pixels1,pixels2) =
-    Array.zip pixels1 pixels2
-    |> Array.map (fun (x,y) -> abs (x-y))
-    |> Array.sum
-
-let euclideanDistance (X,Y) =
-    Array.zip X Y
-    |> Array.map (fun (x,y) -> pown (x-y) 2)
-    |> Array.sum
-    |> sqrt
-*)
-
 type Distance = int[] * int[] -> int
 
 let manhattanDistance (pixels1,pixels2) =
@@ -50,9 +37,16 @@ let train (trainingData:Observation[]) (dist:Distance) =
         |> fun x -> x.Label
     classify
 
-let classifier = train trainingData manhattanDistance
+let evaluate validationData classifier =
+    validationData
+    |> Array.averageBy (fun x -> if classifier x.Pixels = x.Label then 1. else 0.)
+    |> printfn "Correct: %.3f"
 
-validationData
-|> Array.averageBy (fun x -> if classifier x.Pixels = x.Label then 1. else 0.)
-|> printfn "Correct: %.3f"
+let manhattanClassifier = train trainingData manhattanDistance
+let euclideanClassifier = train trainingData euclideanDistance
+
+printfn "Manhattan"
+evaluate validationData manhattanClassifier
+printfn "Euclidean"
+evaluate validationData euclideanClassifier
 
