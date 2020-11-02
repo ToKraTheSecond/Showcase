@@ -1,8 +1,19 @@
-﻿// Learn more about F# at http://fsharp.org
-
-open System
+﻿open Operations
 
 [<EntryPoint>]
 let main argv =
-    printfn "Hello World from F#!"
-    0 // return an integer exit code
+    let trainingPath = "data/trainingsample.csv"
+    let trainingData = reader trainingPath
+    
+    let validationPath = "data/validationsample.csv"
+    let validationData = reader validationPath  
+    
+    let manhattanClassifier = train trainingData manhattanDistance
+    let euclideanClassifier = train trainingData euclideanDistance
+    
+    printfn "Manhattan"
+    evaluate validationData manhattanClassifier
+    printfn "Euclidean"
+    evaluate validationData euclideanClassifier
+
+    0
