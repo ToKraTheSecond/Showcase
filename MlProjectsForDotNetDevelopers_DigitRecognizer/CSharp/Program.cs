@@ -1,5 +1,7 @@
-﻿using Csharp_DigitRecognizer;
-using System;
+﻿using System;
+using System.IO;
+
+using Csharp_DigitRecognizer;
 
 namespace DigitRecognizer
 {
@@ -10,11 +12,11 @@ namespace DigitRecognizer
             var distance = new ManhattanDistance();
             var classifier = new BasicClassifier(distance);
 
-            var trainingPath = "data/trainingsample.csv";
+            var trainingPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "trainingsample.csv");
             var training = DataReader.ReadObservations(trainingPath);
             classifier.Train(training);
 
-            var validationPath = "data/validationsample.csv";
+            var validationPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "validationsample.csv");
             var validation = DataReader.ReadObservations(validationPath);
 
             var correct = Evaluator.Correct(validation, classifier);
