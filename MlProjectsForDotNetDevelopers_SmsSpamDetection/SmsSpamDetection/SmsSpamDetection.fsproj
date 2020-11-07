@@ -6,10 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Data\SMSSpamCollection">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Script.fsx" />
     <Compile Include="Program.fs" />
   </ItemGroup>
-
-  <ItemGroup />
 
 </Project>
