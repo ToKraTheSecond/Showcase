@@ -1,8 +1,11 @@
 ﻿open System.IO
 
-type DocType =
-    | Ham
-    | Spam
+#load "Domain.fs"
+#load "NaiveBayes.fs"
+
+open Domain
+open NaiveBayes.Classifier
+
 
 let datasetPath = Path.Combine(__SOURCE_DIRECTORY__, "Data", "SMSSpamCollection")
 
@@ -21,3 +24,16 @@ let parseLine (line:string) =
 let dataset =
     File.ReadAllLines datasetPath
     |> Array.map parseLine
+
+let spamWithFREE =
+    dataset
+    |> Array.filter (fun (docType,_) -> docType = Spam)
+    |> Array.filter (fun (_,sms) -> sms.Contains("FREE"))
+    |> Array.length
+
+let hamWithFREE =
+    dataset
+    |> Array.filter (fun (docType,_) -> docType = Ham)
+    |> Array.filter (fun (_,sms) -> sms.Contains("FREE"))
+    |> Array.length
+
