@@ -26,3 +26,12 @@ let analyze (group:TokenizedDoc seq) (totalDocs:int) (classificationTokens:Token
         Proportion = groupProportion
         TokenFrequencies = scoredTokens
     }
+
+let learn (docs:(_ * string) []) (tokenizer:Tokenizer) (classificationTokens:Token Set) =
+    let total = docs.Length
+    docs
+    |> Array.map (fun (label,docs) -> label,tokenizer docs)
+    |> Seq.groupBy fst
+    |> Seq.map (fun (label,group) -> label,group |> Seq.map snd)
+    |> Seq.map (fun (label,group) -> label,analyze group total classificationTokens)
+    |> Seq.toArray
