@@ -1,6 +1,7 @@
 ﻿module Operations
 
 open Domain
+open NaiveBayes.Classifier
 
 let proportion count total = float count / float total
 
@@ -35,3 +36,8 @@ let learn (docs:(_ * string) []) (tokenizer:Tokenizer) (classificationTokens:Tok
     |> Seq.map (fun (label,group) -> label,group |> Seq.map snd)
     |> Seq.map (fun (label,group) -> label,analyze group total classificationTokens)
     |> Seq.toArray
+
+let train (docs:(_ * string) []) (tokenizer:Tokenizer) (classificationTokens:Token Set) =
+    let groups = learn docs tokenizer classificationTokens
+    let classifier = classify groups tokenizer
+    classifier
