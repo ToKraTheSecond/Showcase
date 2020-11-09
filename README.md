@@ -1,4 +1,4 @@
-[[_TOC_]]
+__TOC__
 
 # FsharpShowcase
 F# code that I want to expose publicly
