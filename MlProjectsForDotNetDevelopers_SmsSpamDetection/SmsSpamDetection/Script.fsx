@@ -2,9 +2,11 @@
 
 #load "Domain.fs"
 #load "NaiveBayes.fs"
+#load "Operations.fs"
 
 open Domain
 open NaiveBayes.Classifier
+open Operations
 
 
 let datasetPath = Path.Combine(__SOURCE_DIRECTORY__, "Data", "SMSSpamCollection")
@@ -25,15 +27,11 @@ let dataset =
     File.ReadAllLines datasetPath
     |> Array.map parseLine
 
-let spamWithFREE =
-    dataset
-    |> Array.filter (fun (docType,_) -> docType = Spam)
-    |> Array.filter (fun (_,sms) -> sms.Contains("FREE"))
-    |> Array.length
+let validation = dataset.[0 .. 999]
+let training = dataset.[1000 ..]
 
-let hamWithFREE =
-    dataset
-    |> Array.filter (fun (docType,_) -> docType = Ham)
-    |> Array.filter (fun (_,sms) -> sms.Contains("FREE"))
-    |> Array.length
+let txtClassifier = train training tokens (["txt"] |> set)
 
+validation
+|> Seq.averageBy (fun (docType,sms) -> if docType = txtClassifier sms then 1.0 else 0.0)
+|> printfn "Based on 'txt', correctly classified: %.3f"
