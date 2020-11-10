@@ -1,5 +1,7 @@
 ﻿module Operations
 
+open System.Text.RegularExpressions
+
 open Domain
 open NaiveBayes.Classifier
 
@@ -41,3 +43,12 @@ let train (docs:(_ * string) []) (tokenizer:Tokenizer) (classificationTokens:Tok
     let groups = learn docs tokenizer classificationTokens
     let classifier = classify groups tokenizer
     classifier
+
+let matchWords = Regex(@"\w+")
+
+let tokens (text:string) =
+    text.ToLowerInvariant()
+    |> matchWords.Matches
+    |> Seq.cast<Match>
+    |> Seq.map (fun m -> m.Value)
+    |> Set.ofSeq
