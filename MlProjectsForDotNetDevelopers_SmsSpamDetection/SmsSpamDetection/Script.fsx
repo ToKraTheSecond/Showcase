@@ -43,6 +43,21 @@ let vocabulary (tokenizer:Tokenizer) (corpus:string seq) =
     |> Seq.map tokenizer
     |> Set.unionMany
 
+let ham,spam =
+    let rawHam,rawSpam =
+        training
+        |> Array.partition (fun (lbl,_) -> lbl=Ham)
+    rawHam |> Array.map snd,
+    rawSpam |> Array.map snd
+
+let hamCount = ham |> vocabulary casedTokenizer |> Set.count
+let spamCount = spam |> vocabulary casedTokenizer |> Set.count
+
+let topHam = ham |> top (hamCount / 10) casedTokenizer
+let topSpam = spam |> top (spamCount / 10) casedTokenizer
+
+let topTokens = Set.union topHam topSpam
+
 let allTokens =
     training
     |> Seq.map snd
@@ -54,9 +69,9 @@ let casedTokens =
     |> vocabulary casedTokenizer
 
 let evaluate (tokenizer:Tokenizer) (tokens:Token Set) =
-    let classifier = train training tokenizer allTokens
+    let classifier = train training tokenizer tokens
     validation
     |> Seq.averageBy (fun (docType,sms) -> if docType = classifier sms then 1.0 else 0.0)
     |> printfn "Correctly classified: %.3f"
 
-evaluate casedTokenizer allTokens
+evaluate casedTokenizer topTokens
