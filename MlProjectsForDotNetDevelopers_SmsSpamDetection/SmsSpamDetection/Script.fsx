@@ -48,10 +48,15 @@ let allTokens =
     |> Seq.map snd
     |> vocabulary wordTokenizer
 
+let casedTokens =
+    training
+    |> Seq.map snd
+    |> vocabulary casedTokenizer
+
 let evaluate (tokenizer:Tokenizer) (tokens:Token Set) =
     let classifier = train training tokenizer allTokens
     validation
     |> Seq.averageBy (fun (docType,sms) -> if docType = classifier sms then 1.0 else 0.0)
     |> printfn "Correctly classified: %.3f"
 
-evaluate wordTokenizer allTokens
+evaluate casedTokenizer allTokens
