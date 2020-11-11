@@ -46,7 +46,7 @@ let vocabulary (tokenizer:Tokenizer) (corpus:string seq) =
 let allTokens =
     training
     |> Seq.map snd
-    |> vocabulary tokens
+    |> vocabulary wordTokenizer
 
 let evaluate (tokenizer:Tokenizer) (tokens:Token Set) =
     let classifier = train training tokenizer allTokens
@@ -54,4 +54,4 @@ let evaluate (tokenizer:Tokenizer) (tokens:Token Set) =
     |> Seq.averageBy (fun (docType,sms) -> if docType = classifier sms then 1.0 else 0.0)
     |> printfn "Correctly classified: %.3f"
 
-evaluate tokens allTokens
+evaluate wordTokenizer allTokens

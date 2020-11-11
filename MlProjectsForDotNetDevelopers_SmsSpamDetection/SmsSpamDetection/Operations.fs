@@ -46,7 +46,7 @@ let train (docs:(_ * string) []) (tokenizer:Tokenizer) (classificationTokens:Tok
 
 let matchWords = Regex(@"\w+")
 
-let tokens (text:string) =
+let wordTokenizer (text:string) =
     text.ToLowerInvariant()
     |> matchWords.Matches
     |> Seq.cast<Match>
