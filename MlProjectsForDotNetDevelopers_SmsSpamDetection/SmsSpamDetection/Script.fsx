@@ -30,8 +30,28 @@ let dataset =
 let validation = dataset.[0 .. 999]
 let training = dataset.[1000 ..]
 
+(*
 let txtClassifier = train training tokens (["txt"] |> set)
 
 validation
 |> Seq.averageBy (fun (docType,sms) -> if docType = txtClassifier sms then 1.0 else 0.0)
 |> printfn "Based on 'txt', correctly classified: %.3f"
+*)
+
+let vocabulary (tokenizer:Tokenizer) (corpus:string seq) =
+    corpus
+    |> Seq.map tokenizer
+    |> Set.unionMany
+
+let allTokens =
+    training
+    |> Seq.map snd
+    |> vocabulary tokens
+
+let evaluate (tokenizer:Tokenizer) (tokens:Token Set) =
+    let classifier = train training tokenizer allTokens
+    validation
+    |> Seq.averageBy (fun (docType,sms) -> if docType = classifier sms then 1.0 else 0.0)
+    |> printfn "Correctly classified: %.3f"
+
+evaluate tokens allTokens
