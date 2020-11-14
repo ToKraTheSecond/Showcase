@@ -108,4 +108,31 @@ let smartTokens =
 
 let smartTokenizer = casedTokenizer >> Set.map phone >> Set.map txt
 
+let lengthAnalysis len =
+    let long (msg:string) = msg.Length > len
+    let ham,spam =
+        dataset
+        |> Array.partition (fun (docType,_) ->docType = Ham)
+    let spamAndLongCount =
+        spam
+        |> Array.filter (fun (_,sms) -> long sms)
+        |> Array.length
+
+    let longCount =
+        dataset
+        |> Array.filter (fun (_,sms) -> long sms)
+        |> Array.length
+
+    let pSpam = (float spam.Length) / (float dataset.Length)
+
+    let pLongIfSpam = float spamAndLongCount / float spam.Length
+
+    let pLong = float longCount / float (dataset.Length)
+
+    let pSpamIfLong = pLongIfSpam * pSpam / pLong
+
+    pSpamIfLong
+
+for l in 10 .. 10 .. 130 do printfn "P(Spam if Length > %i) = %.4f" l (lengthAnalysis l)
+
 evaluate smartTokenizer smartTokens
