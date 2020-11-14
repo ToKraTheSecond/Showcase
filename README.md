@@ -4,9 +4,6 @@
   * [ML projects for .NET developers](#ml-projects-for-net-developers)
     + [Digit recognizer](#digit-recognizer)
 
-<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-
-
 # FsharpShowcase
 F# code that I want to expose publicly
 
