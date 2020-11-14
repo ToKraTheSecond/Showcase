@@ -1,4 +1,5 @@
 ﻿open System.IO
+open System.Text.RegularExpressions
 
 #load "Domain.fs"
 #load "NaiveBayes.fs"
@@ -77,4 +78,34 @@ let evaluate (tokenizer:Tokenizer) (tokens:Token Set) =
 let commonTokens = Set.intersect topHam topSpam
 let specificTokens = Set.difference topTokens commonTokens
 
-evaluate casedTokenizer specificTokens
+let rareTokens n (tokenizer:Tokenizer) (docs:string []) =
+    let tokenized = docs |> Array.map tokenizer
+    let tokens = tokenized |> Set.unionMany
+    tokens
+    |> Seq.sortBy (fun t -> countIn tokenized t)
+    |> Seq.take n
+    |> Set.ofSeq
+
+let rareHam = ham |> rareTokens 50 casedTokenizer |> Seq.iter (printfn "%s")
+let rareSpam = spam |> rareTokens 50 casedTokenizer |> Seq.iter (printfn "%s")
+
+let phoneWords = Regex(@"0[7-9]\d{9}")
+let phone (text:string) =
+    match (phoneWords.IsMatch text) with
+    | true -> "__PHONE__"
+    | false -> text
+
+let txtCode = Regex(@"\b\d{5}\b")
+let txt (text:string) =
+    match (txtCode.IsMatch text) with
+    | true -> "__TXT__"
+    | false -> text
+
+let smartTokens =
+    specificTokens
+    |> Set.add "__TXT__"
+    |> Set.add "__PHONE__"
+
+let smartTokenizer = casedTokenizer >> Set.map phone >> Set.map txt
+
+evaluate smartTokenizer smartTokens
