@@ -74,4 +74,7 @@ let evaluate (tokenizer:Tokenizer) (tokens:Token Set) =
     |> Seq.averageBy (fun (docType,sms) -> if docType = classifier sms then 1.0 else 0.0)
     |> printfn "Correctly classified: %.3f"
 
-evaluate casedTokenizer topTokens
+let commonTokens = Set.intersect topHam topSpam
+let specificTokens = Set.difference topTokens commonTokens
+
+evaluate casedTokenizer specificTokens
