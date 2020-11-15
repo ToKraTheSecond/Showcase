@@ -44,26 +44,27 @@ let train (docs:(_ * string) []) (tokenizer:Tokenizer) (classificationTokens:Tok
     let classifier = classify groups tokenizer
     classifier
 
-let matchWords = Regex(@"\w+")
+let lengthAnalysis len (dataset:(_ * string) []) =
+    let long (msg:string) = msg.Length > len
+    let ham,spam =
+        dataset
+        |> Array.partition (fun (docType,_) ->docType = Ham)
+    let spamAndLongCount =
+        spam
+        |> Array.filter (fun (_,sms) -> long sms)
+        |> Array.length
 
-let wordTokenizer (text:string) =
-    text.ToLowerInvariant()
-    |> matchWords.Matches
-    |> Seq.cast<Match>
-    |> Seq.map (fun m -> m.Value)
-    |> Set.ofSeq
+    let longCount =
+        dataset
+        |> Array.filter (fun (_,sms) -> long sms)
+        |> Array.length
 
-let casedTokenizer (text:string) =
-    text
-    |> matchWords.Matches
-    |> Seq.cast<Match>
-    |> Seq.map (fun m -> m.Value)
-    |> Set.ofSeq
+    let pSpam = (float spam.Length) / (float dataset.Length)
 
-let top n (tokenizer:Tokenizer) (docs:string []) =
-    let tokenized = docs |> Array.map tokenizer
-    let tokens = tokenized |> Set.unionMany
-    tokens
-    |> Seq.sortBy (fun t -> - countIn tokenized t)
-    |> Seq.take n
-    |> Set.ofSeq
+    let pLongIfSpam = float spamAndLongCount / float spam.Length
+
+    let pLong = float longCount / float (dataset.Length)
+
+    let pSpamIfLong = pLongIfSpam * pSpam / pLong
+
+    pSpamIfLong

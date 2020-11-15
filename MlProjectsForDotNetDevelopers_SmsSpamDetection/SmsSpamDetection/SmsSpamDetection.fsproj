@@ -12,6 +12,7 @@
     <Compile Include="Domain.fs" />
     <Compile Include="NaiveBayes.fs" />
     <Compile Include="Operations.fs" />
+    <Compile Include="Tokenizer.fs" />
     <Compile Include="Program.fs" />
     <None Include="Script.fsx" />
   </ItemGroup>
