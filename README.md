@@ -3,6 +3,7 @@
     + [Simple Bank Account System - Capstone 4](#simple-bank-account-system---capstone-4)
   * [ML projects for .NET developers](#ml-projects-for-net-developers)
     + [Digit recognizer](#digit-recognizer)
+    + [Sms spam detection](#sms-spam-detection)
 
 # FsharpShowcase
 F# code that I want to expose publicly
@@ -35,4 +36,11 @@ F# part:
 ```
 cd MlProjectsForDotNetDevelopers_DigitRecognizer\FSharp\
 dotnet run --project FSharp.fsproj
+```
+
+### Sms spam detection
+
+```
+dotnet build MlProjectsForDotNetDevelopers_SmsSpamDetection
+dotnet run --project MlProjectsForDotNetDevelopers_SmsSpamDetection\SmsSpamDetection\SmsSpamDetection.fsproj
 ```
