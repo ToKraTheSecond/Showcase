@@ -27,15 +27,13 @@ dotnet build MlProjectsForDotNetDevelopers_DigitRecognizer
 C# part:
 
 ```
-cd MlProjectsForDotNetDevelopers_DigitRecognizer\CSharp\
-dotnet run --project CSharp.csproj
+dotnet run --project MlProjectsForDotNetDevelopers_DigitRecognizer\CSharp\CSharp.csproj
 ```
 
 F# part:
 
 ```
-cd MlProjectsForDotNetDevelopers_DigitRecognizer\FSharp\
-dotnet run --project FSharp.fsproj
+dotnet run --project MlProjectsForDotNetDevelopers_DigitRecognizer\FSharp\FSharp.fsproj
 ```
 
 ### Sms spam detection
