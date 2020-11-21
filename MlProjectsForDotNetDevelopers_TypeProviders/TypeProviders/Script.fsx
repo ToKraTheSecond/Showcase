@@ -23,3 +23,16 @@ type HardCodedQuestions = JsonProvider<sample>
 let javaQuery = "https://api.stackexchange.com/2.2/questions?site=stackoverflow&tagged=java"
 
 let javaQuestions = HardCodedQuestions.Load(javaQuery).Items |> Seq.iter (fun q -> printfn "%s" q.Title)
+
+let questionQuery = """https://api.stackexchange.com/2.2/questions?site=stackoverflow"""
+
+let tagged tags query =
+    // join the tags in a ; separated string
+    let joinedTags = tags |> String.concat ";"
+    sprintf "%s&tagged=%s" query joinedTags
+
+let page p query = sprintf "%s&page=%i" query p
+
+let pageSize s query = sprintf "%s&pagesize=%i" query s
+
+let extractQuestions (query:string) = Questions.Load(query).Items
