@@ -36,3 +36,18 @@ let page p query = sprintf "%s&page=%i" query p
 let pageSize s query = sprintf "%s&pagesize=%i" query s
 
 let extractQuestions (query:string) = Questions.Load(query).Items
+
+let ``C#`` = "C%23"
+let ``F#`` = "F%23"
+
+let fsSample =
+    questionQuery
+    |> tagged [``F#``]
+    |> pageSize 100
+    |> extractQuestions
+
+let csSample =
+    questionQuery
+    |> tagged [``C#``]
+    |> pageSize 100
+    |> extractQuestions
