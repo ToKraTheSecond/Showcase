@@ -51,3 +51,14 @@ let csSample =
     |> tagged [``C#``]
     |> pageSize 100
     |> extractQuestions
+
+let analyzeTags (qs:Questions.Item seq) =
+    qs
+    |> Seq.collect (fun question -> question.Tags)
+    |> Seq.countBy id
+    |> Seq.filter (fun (_,count) -> count > 2)
+    |> Seq.sortBy (fun (_,count) -> -count)
+    |> Seq.iter (fun (tag,count) -> printfn "%s,%i" tag count)
+
+analyzeTags fsSample
+analyzeTags csSample
