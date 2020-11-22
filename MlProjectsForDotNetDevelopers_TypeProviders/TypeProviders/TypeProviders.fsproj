@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="FSharp.Data" Version="3.3.3" />
+    <PackageReference Include="RProvider" Version="1.1.22" />
   </ItemGroup>
 
 </Project>
