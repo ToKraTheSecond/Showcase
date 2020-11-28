@@ -3,11 +3,13 @@
 #r @"r.net\1.7.0\lib\net40\RDotNet.dll"
 #r @"rprovider\1.1.22\lib\net40\RProvider.Runtime.dll"
 #r @"rprovider\1.1.22\lib\net40\RProvider.dll"
+#r @"deedle\2.3.0\lib\net45\Deedle.dll"
 
 open FSharp.Data
 open RProvider
 open RProvider.``base``
 open RProvider.graphics
+open Deedle
 
 let wb = WorldBankData.GetDataContext()
 let countries = wb.Countries
@@ -40,3 +42,15 @@ let rdf =
 // Scatterplot of all features
 rdf |> R.plot
 rdf |> R.summary |> R.print
+
+// Creating series and data frames with Deedle
+let series1 = series [ "Alpha", 1.; "Bravo", 2.; "Delta", 4. ]
+let series2 = series [ "Bravo", 20.; "Charlie", 30.; "Delta", 40. ]
+let toyFrame = frame [ "First", series1; "Second", series2 ]
+
+series1 |> Stats.sum
+toyFrame |> Stats.mean
+toyFrame?Second |> Stats.mean
+
+toyFrame?New <- toyFrame?First + toyFrame?Second
+toyFrame |> Stats.mean
