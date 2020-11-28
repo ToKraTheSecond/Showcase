@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="WorldMap.fsx" />
     <Compile Include="Program.fs" />
     <None Include="StackOverflow.fsx" />
     <None Include="WorldBank.fsx" />
