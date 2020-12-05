@@ -1,12 +1,12 @@
-- [FsharpShowcase](#fsharpshowcase)
+- [Showcase](#showcase)
   * [Get Programming with F#](#get-programming-with-f-)
     + [Simple Bank Account System - Capstone 4](#simple-bank-account-system---capstone-4)
   * [ML projects for .NET developers](#ml-projects-for-net-developers)
     + [Digit recognizer](#digit-recognizer)
     + [Sms spam detection](#sms-spam-detection)
 
-# FsharpShowcase
-F# code that I want to expose publicly
+# Showcase
+Code and other snippets that I want to share, but are too small to live in their own repo.
 
 ## Get Programming with F#
 
