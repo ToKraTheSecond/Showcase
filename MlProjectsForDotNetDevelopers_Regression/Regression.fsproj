@@ -6,7 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Data\day.csv" />
     <Compile Include="Program.fs" />
   </ItemGroup>
+
+  <ItemGroup />
 
 </Project>
