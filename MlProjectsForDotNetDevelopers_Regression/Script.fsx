@@ -8,5 +8,16 @@ open FSharp.Charting
 type Data = CsvProvider<"Data/day.csv">
 let dataset = Data.Load("Data/day.csv")
 let data = dataset.Rows
+let count = data |> Seq.map (fun x -> float x.Cnt)
 
-let all = Chart.Line [ for obs in data -> obs.Cnt ]
+let ma n (series:float seq) =
+    series
+    |> Seq.windowed n
+    |> Seq.map (fun xs -> xs |> Seq.average)
+    |> Seq.toList
+
+Chart.Combine [
+    Chart.Line count
+    Chart.Line (ma 7 count)
+    Chart.Line (ma 30 count) ]
+
