@@ -83,3 +83,13 @@ let model2 = model (stochastic rate (0.0,0.0))
 Chart.Combine [
     Chart.Line count
     Chart.Line [ for obs in data -> model2 obs ]]
+
+// Analyzing Model Improvements
+
+let hiRate = 10.0 * rate
+let error_eval =
+    data
+    |> Seq.scan (fun (t0, t1) obs -> update hiRate (t0,t1) obs) (0.0,0.0)
+    |> Seq.map (model >> overallCost)
+    |> Chart.Line
+
