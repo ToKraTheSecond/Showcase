@@ -1,16 +1,20 @@
-Bubble b;
+Bubble[] bubbles = new Bubble[5];
 int padding = 100;
 
 void setup() {
   size(640,360);
-  b = new Bubble(55);
+  for (int i = 0; i < bubbles.length; i++) {
+      bubbles[i] = new Bubble(random(10, 50)); 
+  }
 }
 
 void draw() {
   background(255);
-  b.ascend();
-  b.display();
-  b.top();
+  for (int i = 0; i < bubbles.length; i++) {  
+    bubbles[i].ascend();
+    bubbles[i].display();
+    bubbles[i].top();
+  }
 }
 
 class Bubble {
