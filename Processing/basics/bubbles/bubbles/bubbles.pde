@@ -1,11 +1,8 @@
-Bubble[] bubbles = new Bubble[1];
+Bubble[] bubbles = new Bubble[0];
 int padding = 50;
 
 void setup() {
   size(640,360);
-  for (int i = 0; i < bubbles.length; i++) {
-      bubbles[i] = new Bubble(random(10, 50), int(random(0,width))); 
-  }
 }
 
 void draw() {
@@ -18,7 +15,7 @@ void draw() {
 }
 
 void mouseClicked() {
-  bubbles = (Bubble[]) append(bubbles, new Bubble(random(10, 50), int(random(0,width))));
+  bubbles = (Bubble[]) append(bubbles, new Bubble(mouseX, mouseY, random(10, 50)));
 }
   
 
@@ -27,9 +24,9 @@ class Bubble {
   float y;
   float diameter;
   
-  Bubble(float Diameter, int VerticalPos) {
+  Bubble(int VerticalPos, int HorizontalPos, float Diameter) {
     x = VerticalPos;
-    y = height;
+    y = HorizontalPos;
     diameter = Diameter;
   }
   
