@@ -1,5 +1,5 @@
-Bubble[] bubbles = new Bubble[5];
-int padding = 100;
+Bubble[] bubbles = new Bubble[1];
+int padding = 50;
 
 void setup() {
   size(640,360);
@@ -16,6 +16,11 @@ void draw() {
     bubbles[i].top();
   }
 }
+
+void mouseClicked() {
+  bubbles = (Bubble[]) append(bubbles, new Bubble(random(10, 50), int(random(0,width))));
+}
+  
 
 class Bubble {
   float x;
