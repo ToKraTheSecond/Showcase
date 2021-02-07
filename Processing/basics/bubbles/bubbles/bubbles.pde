@@ -4,7 +4,7 @@ int padding = 100;
 void setup() {
   size(640,360);
   for (int i = 0; i < bubbles.length; i++) {
-      bubbles[i] = new Bubble(random(10, 50)); 
+      bubbles[i] = new Bubble(random(10, 50), int(random(0,width))); 
   }
 }
 
@@ -22,10 +22,10 @@ class Bubble {
   float y;
   float diameter;
   
-  Bubble(float tempD) {
-    x = width/2;
+  Bubble(float Diameter, int VerticalPos) {
+    x = VerticalPos;
     y = height;
-    diameter = tempD;
+    diameter = Diameter;
   }
   
   void ascend() {
