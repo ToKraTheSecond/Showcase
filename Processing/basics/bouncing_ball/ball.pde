@@ -2,6 +2,7 @@ class Ball {
   PVector location;
   PVector velocity;
   PVector acceleration;
+  PVector mouse;
   
   Ball() {
     location = new PVector(width/2, height/2);
@@ -10,7 +11,10 @@ class Ball {
   }
   
   void move() {
-    acceleration = PVector.random2D();
+    PVector mouse = new PVector(mouseX,mouseY);
+    mouse.sub(location);
+    mouse.setMag(0.5);    
+    acceleration = mouse;
     velocity.add(acceleration);
     location.add(velocity);
     velocity.limit(5);
