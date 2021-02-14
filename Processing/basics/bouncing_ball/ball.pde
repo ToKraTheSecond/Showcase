@@ -1,14 +1,19 @@
 class Ball {
   PVector location;
   PVector velocity;
+  PVector acceleration;
   
   Ball() {
     location = new PVector(width/2, height/2);
-    velocity = new PVector(2.5,-2);
+    velocity = new PVector(0,0);
+    acceleration = new PVector(0,0);
   }
   
   void move() {
+    acceleration = PVector.random2D();
+    velocity.add(acceleration);
     location.add(velocity);
+    velocity.limit(5);
   }
   
   void bounce() {
