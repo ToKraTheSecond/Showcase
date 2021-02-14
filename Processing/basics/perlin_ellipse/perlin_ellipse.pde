@@ -2,7 +2,6 @@ float t = 0;
 
 void setup() {
   size(600, 400);
-  frameRate(10);
 }
 
 void draw() {
