@@ -1,6 +1,18 @@
 open System
 open System.IO
 
+module Float =
+
+    let tryFromString s =
+        match s with
+        | "N/A" -> None
+        | _ -> Some (float s)
+
+    let fromStringOr d s =
+        s
+        |> tryFromString
+        |> Option.defaultValue d
+
 type Student =
     {
         Name : string
@@ -19,7 +31,7 @@ type Student =
         let scores =
             elements
             |> Array.skip 2
-            |> Array.map float 
+            |> Array.map (Float.fromStringOr 50.0)
         let meanScore = scores |> Array.average
         let minScore = scores |> Array.min
         let maxScore = scores |> Array.max
@@ -41,19 +53,22 @@ let summerize filePath =
     rows
     |> Array.skip 1
     |> Array.map Student.fromString
+    |> Array.sortBy (fun student -> student.Name)
     |> Array.iter Student.printSummary
 
 [<EntryPoint>]
 let main argv =
-    if argv.Length = 1 then
-        let filePath = argv.[0]
-        if File.Exists filePath then
+    let filePath = argv.[0]
+    match argv.Length with
+    | 1 ->
+        match (File.Exists filePath) with
+        | true ->
             printfn "Processing %s" filePath
             summerize filePath
             0
-        else
+        | _ ->
             printfn "File not found: %s" filePath
             2
-    else
+    | _ ->
         printfn "Please specify a file."
         1
