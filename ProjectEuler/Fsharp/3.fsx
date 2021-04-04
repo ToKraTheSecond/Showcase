@@ -8,3 +8,5 @@ let rec factorize n possibleFactor factorSet =
         factorize (n / possibleFactor) possibleFactor (possibleFactor::factorSet)
     else
         factorize n (possibleFactor + 1L) factorSet
+
+factorize 600851475143L 2L [] |> Seq.max
