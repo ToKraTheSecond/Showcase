@@ -5,6 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="1.fsx" />
+    <Compile Include="2.fsx" />
     <Compile Include="scripting_file.fsx" />
     <Compile Include="Program.fs" />
   </ItemGroup>
