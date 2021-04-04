@@ -1,4 +1,5 @@
 // My solution
+// Seq.unfold [function [currentState]] [initialState]
 Seq.unfold (fun (a, b) -> Some(a + b, (b, a + b))) (0, 1)
 |> Seq.takeWhile (fun x -> x <= 3999999 )
 |> Seq.filter (fun x -> x % 2 = 0)
