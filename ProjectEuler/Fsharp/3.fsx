@@ -2,7 +2,7 @@
 
 open ProjectEuler.Factorization
 
-600851475143L |> factorize 2L [] |> Seq.max
+factorize 2L [] 600851475143L |> Seq.max
 
 // Other cool solutions
 // https://github.com/JustinPealing/euler-fs/blob/master/problem03.fsx
