@@ -4,11 +4,11 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="factorization.fs" />
+    <Compile Include="Factorization.fs" />
     <Compile Include="1.fsx" />
     <Compile Include="2.fsx" />
     <Compile Include="3.fsx" />
-    <Compile Include="scripting_file.fsx" />
+    <Compile Include="ScriptingFile.fsx" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 // inspiration on how to work with numbers bigger than 32-bit integer from:
 // https://jeremybytes.blogspot.com/2016/07/getting-prime-factors-in-f-with-good.html
-#load "factorization.fs"
+#load "Factorization.fs"
 
 open ProjectEuler.Factorization
 
