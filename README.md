@@ -1,10 +1,10 @@
-- [Showcase](#showcase)
-  * [Get Programming with F#](#get-programming-with-f-)
-  * [ML projects for .NET developers](#ml-projects-for-net-developers)
-
 # Showcase
 Code and other snippets that I want to share, but are too small to live in their own repo.
 
-## Get Programming with F#
+## F#
+* Get Programming with F# - book
+* ML projects for .NET developers - book
+* F# from the Ground Up - udemy course
+* Project Euler
 
-## ML projects for .NET developers
+## Processing
