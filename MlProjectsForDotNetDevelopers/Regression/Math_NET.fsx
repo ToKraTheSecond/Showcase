@@ -131,6 +131,10 @@ let xAxisRange = [ 0 .. [ for obs in data -> float obs.Cnt ].Length]
 |> Chart.Scatter
 |> Chart.Show
 
+[ for obs in data -> obs.Temp, obs.Cnt ]
+|> Chart.Scatter
+|> Chart.Show
+
 let featurizer2 (obs:Obs) =
     [
         1.
@@ -150,3 +154,56 @@ let (theta2,model2) = model featurizer2 training
 
 evaluate model2 training |> printfn "Training: %.0f"
 evaluate model2 validation |> printfn "Validation: %.0f"
+
+let squareTempFeaturizer (obs:Obs) =
+    [
+        1.
+        obs.Temp |> float
+        obs.Temp * obs.Temp |> float
+    ]
+
+let (_,squareTempModel) = model squareTempFeaturizer data
+
+[ for obs in data -> obs.Temp, squareTempModel obs ]
+|> Chart.Scatter
+|> Chart.Show
+
+[ for obs in data -> obs.Temp, obs.Cnt ]
+|> Chart.Scatter
+|> Chart.Show
+
+[
+    Scatter(
+        x = [ for obs in data -> obs.Temp],
+        y = [ for obs in data -> squareTempModel obs ],
+        mode = "markers"
+        );
+    Scatter(
+        x = [ for obs in data -> obs.Temp ],
+        y = [ for obs in data -> obs.Cnt ],
+        mode = "markers"
+        );
+]
+|> Chart.Plot
+|> Chart.Show
+
+let featurizer3 (obs:Obs) =
+    [
+        1.
+        obs.Instant |> float
+        obs.Hum |> float
+        obs.Temp |> float
+        obs.Windspeed |> float
+        obs.Temp * obs.Temp |> float
+        (if obs.Weekday = 1 then 1.0 else 0.0)
+        (if obs.Weekday = 2 then 1.0 else 0.0)
+        (if obs.Weekday = 3 then 1.0 else 0.0)
+        (if obs.Weekday = 4 then 1.0 else 0.0)
+        (if obs.Weekday = 5 then 1.0 else 0.0)
+        (if obs.Weekday = 6 then 1.0 else 0.0)
+    ]
+
+let (theta3,model3) = model featurizer3 training
+
+evaluate model3 training |> printfn "Training: %.0f"
+evaluate model3 validation |> printfn "Validation: %.0f"
