@@ -130,3 +130,23 @@ let xAxisRange = [ 0 .. [ for obs in data -> float obs.Cnt ].Length]
 [ for obs in data -> float obs.Cnt, model1 obs ]
 |> Chart.Scatter
 |> Chart.Show
+
+let featurizer2 (obs:Obs) =
+    [
+        1.
+        obs.Instant |> float
+        obs.Hum |> float
+        obs.Temp |> float
+        obs.Windspeed |> float
+        (if obs.Weekday = 1 then 1.0 else 0.0)
+        (if obs.Weekday = 2 then 1.0 else 0.0)
+        (if obs.Weekday = 3 then 1.0 else 0.0)
+        (if obs.Weekday = 4 then 1.0 else 0.0)
+        (if obs.Weekday = 5 then 1.0 else 0.0)
+        (if obs.Weekday = 6 then 1.0 else 0.0)
+    ]
+
+let (theta2,model2) = model featurizer2 training
+
+evaluate model2 training |> printfn "Training: %.0f"
+evaluate model2 validation |> printfn "Validation: %.0f"
