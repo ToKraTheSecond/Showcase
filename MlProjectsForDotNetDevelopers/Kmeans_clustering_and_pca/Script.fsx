@@ -40,3 +40,19 @@ headers
 |> Chart.Bar
 |> Chart.Show
 
+#load "KMeans.fs"
+open Unsupervised.KMeans
+
+type Observation = float []
+
+let features = headers.Length
+
+let distance (obs1:Observation) (obs2:Observation) =
+    (obs1, obs2)
+    ||> Seq.map2 (fun u1 u2 -> pown (u1 - u2) 2)
+    |> Seq.sum
+
+let centroidOf (cluster:Observation seq) =
+    Array.init features (fun f ->
+        cluster
+        |> Seq.averageBy (fun user -> user.[f]))
