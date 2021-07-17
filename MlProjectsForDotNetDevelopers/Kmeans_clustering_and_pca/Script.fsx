@@ -67,3 +67,9 @@ let (clusters1, classifier1) =
     let clustering = clusterize distance centroidOf
     let k = 5
     clustering observations1 k
+
+clusters1
+|> Seq.iter (fun (id,profile) ->
+    printfn "CLUSTER %i" id
+    profile
+    |> Array.iteri (fun i value -> printfn "%16s %.1f" headers.[i] value))
