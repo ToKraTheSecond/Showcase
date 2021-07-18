@@ -93,3 +93,8 @@ let (clusters2, classifier2) =
     let clustering = clusterize distance centroidOf
     let k = 5
     clustering observations2 k
+
+observations2
+|> Seq.countBy (fun obs -> classifier2 obs)
+|> Seq.iter (fun (clusterID, count) ->
+    printfn "Cluster %i: %i elements" clusterID count)
