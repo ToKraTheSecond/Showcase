@@ -73,3 +73,8 @@ clusters1
     printfn "CLUSTER %i" id
     profile
     |> Array.iteri (fun i value -> printfn "%16s %.1f" headers.[i] value))
+
+observations1
+|> Seq.countBy (fun obs -> classifier1 obs)
+|> Seq.iter (fun (clusterID,count) ->
+    printfn "Cluster %i: %i elements" clusterID count)
