@@ -131,3 +131,20 @@ let AIC (dataset:Observation[]) centroids =
     k, value)
 |> Chart.Line
 |> Chart.Show
+
+let (bestClusters, bestClassifier) =
+    let clustering = clusterize distance centroidOf
+    let k = 10
+    seq {
+            for _ in 1 .. 20 ->
+                clustering observations2 k
+    }
+    |> Seq.minBy (fun (cs,f) ->
+        RSS observations2 (cs |> Seq.map snd))
+
+bestClusters
+|> Seq.iter (fun (id,profile) ->
+    printfn "CLUSTER %i" id
+    profile
+    |> Array.iteri (fun i value ->
+        if value > 0.2 then printfn "%16s %.1f" headers.[i] value))
