@@ -98,3 +98,7 @@ observations2
 |> Seq.countBy (fun obs -> classifier2 obs)
 |> Seq.iter (fun (clusterID, count) ->
     printfn "Cluster %i: %i elements" clusterID count)
+
+let ruleOfThumb (n:int) = sqrt (float n / 2.)
+let k_uleOfThumb = ruleOfThumb observations2.Length
+
