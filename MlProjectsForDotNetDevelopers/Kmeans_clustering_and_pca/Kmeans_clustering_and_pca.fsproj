@@ -5,7 +5,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="KMeans.fs" />
+    <Compile Include="PCA.fs" />
     <Compile Include="Script.fsx" />
+    <Compile Include="PCA.fsx" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 </Project>
